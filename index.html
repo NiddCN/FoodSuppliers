@@ -62,7 +62,7 @@
                                 <b>Contact Number:</b> ${row.ContactNum}
                             ;
                             var marker = L.marker([lat, lng]).addTo(map);
-                            marker.bindPopup(`<b>Info:</b> ${row.YourDataColumn}`);  // Customize with your column names
+                            marker.bindPopup(popupContent); 
                         }
                     });
                 },
