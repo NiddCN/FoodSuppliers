@@ -93,45 +93,5 @@
         <script src="./resources/qgis2web.js"></script>
     </body>
 </html>
-.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.8.3/jquery.csv.min.js"></script>
-            
-      <style>
-    </style>
-</head>
-<body>
-    <div id="map"></div>
-
-    <script>
-        // Initialize the map
-        var map = L.map('map').setView([51.505, -0.09], 13);
-
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-        }).addTo(map);
-
-        // URL to your Google Sheet's CSV download
-        var csvUrl = 'https://docs.google.com/spreadsheets/d/16Nu_nQpB5t10gTV9HsYirQEPUQQ-7leW4eGWzE_Tt5A/gviz/tq?tqx=out:csv&sheet=Sheet1';
-
-        // Fetch the CSV data and add it to the map
-         $.get(csvUrl, function(data) {
-            // Parse CSV data
-            var parsedData = $.csv.toObjects(data);
-            parsedData.forEach(function(row) {
-                var lat = parseFloat(row.lat);   // Ensure this matches your CSV header
-                var lng = parseFloat(row.long);  // Ensure this matches your CSV header
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    var marker = L.marker([lat, lng]).addTo(map);
-                    marker.bindPopup(`<b>Info:</b> ${row.YourDataColumn}`);  // Customize with your column names
-                }
-            });
-        })
-        .fail(function() {
-            console.error('Error fetching CSV data.');
-        });
-    </script>
-</body>
-</html>
 
       
