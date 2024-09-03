@@ -54,6 +54,13 @@
                         var lat = parseFloat(row.lat);   // Ensure these match your CSV header
                         var lng = parseFloat(row.long);  // Ensure these match your CSV header
                         if (!isNaN(lat) && !isNaN(lng)) {
+                            var popupContent = 
+                                <b>Supplier Name:</b> ${row.Supplier}<br>
+                                <b>Category:</b> ${row.Category}<br>
+                                <b>Website:</b> <a href="${row.Website}" target="_blank">${row.Website}</a><br>
+                                <b>Email:</b> <a href="mailto:${row.Email}">${row.Email}</a><br>
+                                <b>Contact Number:</b> ${row.ContactNum}
+                            ;
                             var marker = L.marker([lat, lng]).addTo(map);
                             marker.bindPopup(`<b>Info:</b> ${row.YourDataColumn}`);  // Customize with your column names
                         }
