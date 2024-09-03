@@ -7,11 +7,11 @@
     <title>Leaflet Map with Google Sheets Data</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script> <!-- Ensure this line is here -->
-    <style>
-        #map {
-            height: 500px;
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.8.3/jquery.csv.min.js"></script>
+            
+      <style>
     </style>
 </head>
 <body>
@@ -30,23 +30,20 @@
         var csvUrl = 'https://docs.google.com/spreadsheets/d/16Nu_nQpB5t10gTV9HsYirQEPUQQ-7leW4eGWzE_Tt5A/gviz/tq?tqx=out:csv&sheet=Sheet1';
 
         // Fetch the CSV data and add it to the map
-        Papa.parse(csvUrl, {
-            download: true,
-            header: true,
-            complete: function(results) {
-                var data = results.data;
-                data.forEach(function(row) {
-                    var lat = parseFloat(row.lat);   // Use the correct column name from your sheet
-                    var lng = parseFloat(row.long);  // Use the correct column name from your sheet
-                    if (!isNaN(lat) && !isNaN(lng)) {
-                        var marker = L.marker([lat, lng]).addTo(map);
-                        marker.bindPopup(`<b>Info:</b> ${row.YourDataColumn}`);  // Customize with your column names
-                    }
-                });
-            },
-            error: function(err) {
-                console.error('Error fetching or parsing data:', err);
-            }
+         $.get(csvUrl, function(data) {
+            // Parse CSV data
+            var parsedData = $.csv.toObjects(data);
+            parsedData.forEach(function(row) {
+                var lat = parseFloat(row.lat);   // Ensure this matches your CSV header
+                var lng = parseFloat(row.long);  // Ensure this matches your CSV header
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    var marker = L.marker([lat, lng]).addTo(map);
+                    marker.bindPopup(`<b>Info:</b> ${row.YourDataColumn}`);  // Customize with your column names
+                }
+            });
+        })
+        .fail(function() {
+            console.error('Error fetching CSV data.');
         });
     </script>
 </body>
