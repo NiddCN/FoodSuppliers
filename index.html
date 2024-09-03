@@ -11,6 +11,10 @@
         <link href="resources/ol-geocoder.min.css" rel="stylesheet">
         <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
         <link rel="stylesheet" href="./resources/qgis2web.css">
+        <title>Leaflet Map with Google Sheets Data</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script>
         <style>
         html, body {
             background-color: #ffffff;
@@ -52,6 +56,29 @@
                 <div id="popup-content"></div>
             </div>
         </div>
+        <script>
+            var csvUrl = 'https://docs.google.com/spreadsheets/d/16Nu_nQpB5t10gTV9HsYirQEPUQQ-7leW4eGWzE_Tt5A/gviz/tq?tqx=out:csv&sheet=Sheet1';
+
+        // Fetch the CSV data and add it to the map
+        Papa.parse(csvUrl, {
+            download: true,
+            header: true,
+            complete: function(results) {
+                var data = results.data;
+                data.forEach(function(row) {
+                    var lat = parseFloat(row.lat);   // Use the correct column name from your sheet
+                    var lng = parseFloat(row.long);  // Use the correct column name from your sheet
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        var marker = L.marker([lat, lng]).addTo(map);
+                        marker.bindPopup(`<b>Info:</b> ${row.YourDataColumn}`);  // Customize with your column names
+                    }
+                });
+            },
+            error: function(err) {
+                console.error('Error fetching or parsing data:', err);
+            }
+        });
+    </script>
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="resources/polyfills.js"></script>
         <script src="./resources/functions.js"></script>
