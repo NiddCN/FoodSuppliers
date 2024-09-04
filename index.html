@@ -16,6 +16,10 @@
             margin: 0;
             background-color: #ffffff;
         }
+        .custom-icon {
+            width: 32px;
+            height: 32px;
+        }
     </style>
 </head>
 <body>
@@ -44,12 +48,18 @@
 
             // Define custom icons for categories
             var categoryIcons = {
-                "Bakery": '/Symbols/bread.svg'   
-                
+                "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',   
+                "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg', 
+                "Frozen foods": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/frozenfood.svg',
+                "Protein": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/protein.svg',   
+                "Dairy and milk products": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/dairy.svg', 
+                "Bakery": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/75f5e54b0473f6808bb5e4858f576c3e1a68b3f7/Symbols/bread.svg',
+                "Catering Supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/cateringsupplies.svg',
+                "Waste": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/waste.svg'
             };
-            
+
             // Fetch and parse CSV data
-            var csvUrl = 'https://docs.google.com/spreadsheets/d/16Nu_nQpB5t10gTV9HsYirQEPUQQ-7leW4eGWzE_Tt5A/gviz/tq?tqx=out:csv&sheet=Sheet2';
+            var csvUrl = 'https://docs.google.com/spreadsheets/d/16Nu_nQpB5t10gTV9HsYirQEPUQQ-7leW4eGWzE_Tt5A/gviz/tq?tqx=out:csv&sheet=Sheet1';
             
             Papa.parse(csvUrl, {
                 download: true,
@@ -58,10 +68,11 @@
                     var data = results.data;
                     data.forEach(function(row) {
                         var lat = parseFloat(row.lat);   
-                        var lng = parseFloat(row.long);  
+                        var lng = parseFloat(row.long); 
                         if (!isNaN(lat) && !isNaN(lng)) {
-                            var category = row.Category; 
-                            var iconUrl = categoryIcons[category]; 
+                            // Determine the appropriate icon based on category
+                            var category = row.Category || 'Default'; // Default if Category is missing
+                            var iconUrl = categoryIcons[category] || 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/default.svg'; // Default icon
 
                             var customIcon = L.icon({
                                 iconUrl: iconUrl,
@@ -71,12 +82,13 @@
                             });
 
                             var marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
-                            var popupContent = 
-                                '<b>Supplier Name:</b> ' + (row.Supplier || 'N/A') + '<br>' +
-                                '<b>Category:</b> ' + (row.Category || 'N/A') + '<br>' +
-                                '<b>Website:</b> <a href="' + (row.Website || '#') + '" target="_blank">' + (row.Website || 'N/A') + '</a><br>' +
-                                '<b>Email:</b> <a href="mailto:' + (row.Email || '') + '">' + (row.Email || 'N/A') + '</a><br>' +
-                                '<b>Contact Number:</b> ' + (row.ContactNum || 'N/A');
+                            var popupContent = [
+                                '<b>Supplier Name:</b> ' + (row.Supplier || 'N/A'),
+                                '<b>Category:</b> ' + (row.Category || 'N/A'),
+                                '<b>Website:</b> <a href="' + (row.Website || '#') + '" target="_blank">' + (row.Website || 'N/A') + '</a>',
+                                '<b>Email:</b> <a href="mailto:' + (row.Email || '') + '">' + (row.Email || 'N/A') + '</a>',
+                                '<b>Contact Number:</b> ' + (row.ContactNum || 'N/A')
+                            ].join('<br>');  // Join the array elements with a line break
 
                             marker.bindPopup(popupContent);
                         }
