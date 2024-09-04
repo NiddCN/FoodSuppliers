@@ -42,8 +42,14 @@
                 maxZoom: 28
             }).addTo(map);
 
+            // Define custom icons for categories
+            var categoryIcons = {
+                "Bakery": 'https://github.com/NiddCN/FoodSuppliers/tree/75f5e54b0473f6808bb5e4858f576c3e1a68b3f7/Symbols/bread.svg'   
+                
+            };
+            
             // Fetch and parse CSV data
-            var csvUrl = 'https://docs.google.com/spreadsheets/d/16Nu_nQpB5t10gTV9HsYirQEPUQQ-7leW4eGWzE_Tt5A/gviz/tq?tqx=out:csv&sheet=Sheet1';
+            var csvUrl = 'https://docs.google.com/spreadsheets/d/16Nu_nQpB5t10gTV9HsYirQEPUQQ-7leW4eGWzE_Tt5A/gviz/tq?tqx=out:csv&sheet=Sheet2';
             
             Papa.parse(csvUrl, {
                 download: true,
@@ -51,9 +57,20 @@
                 complete: function(results) {
                     var data = results.data;
                     data.forEach(function(row) {
-                        var lat = parseFloat(row.lat);   // Ensure these match your CSV header
-                        var lng = parseFloat(row.long);  // Ensure these match your CSV header
+                        var lat = parseFloat(row.lat);   
+                        var lng = parseFloat(row.long);  
                         if (!isNaN(lat) && !isNaN(lng)) {
+                            var category = row.Category; 
+                            var iconUrl = categoryIcons[category]; 
+
+                            var customIcon = L.icon({
+                                iconUrl: iconUrl,
+                                iconSize: [32, 32], // Size of the icon
+                                iconAnchor: [16, 32], // Anchor point of the icon
+                                popupAnchor: [0, -32] // Anchor point of the popup
+                            });
+
+                            var marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
                             var popupContent = 
                                 '<b>Supplier Name:</b> ' + (row.Supplier || 'N/A') + '<br>' +
                                 '<b>Category:</b> ' + (row.Category || 'N/A') + '<br>' +
@@ -61,7 +78,6 @@
                                 '<b>Email:</b> <a href="mailto:' + (row.Email || '') + '">' + (row.Email || 'N/A') + '</a><br>' +
                                 '<b>Contact Number:</b> ' + (row.ContactNum || 'N/A');
 
-                            var marker = L.marker([lat, lng]).addTo(map);
                             marker.bindPopup(popupContent);
                         }
                     });
