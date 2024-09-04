@@ -73,14 +73,7 @@
                         if (!isNaN(lat) && !isNaN(lng)) {
                             // Determine the appropriate icon based on category
                             var category = row.Category || 'Default'; // Default if Category is missing
-                            var iconUrl = categoryIcons[category]; // Default icon
-
-                            console.log(`Category: ${category}, Icon URL: ${iconUrl}`);
-
-                            if (!iconUrl) {
-                               iconUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/default.svg';
-                                console.warn(`Icon URL not found for category: ${category}. Using default icon.`);
-                            }
+                            var iconUrl = categoryIcons[category] || 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/default.svg'; // Default icon
                             
                             var customIcon = L.icon({
                                 iconUrl: iconUrl,
