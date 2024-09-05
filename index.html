@@ -14,31 +14,54 @@
             height: 100%;
             padding: 0;
             margin: 0;
-            background-color: #ffffff;
         }
         .custom-icon {
             width: 32px;
             height: 32px;
         }
+        #filter-panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <div id="filter-panel">
+        <h3>Filter by Category</h3>
+        <form id="category-filter">
+            <label><input type="checkbox" value="Ready to eat meals" checked> Ready to eat meals</label><br>
+            <label><input type="checkbox" value="Specialist diet supplies" checked> Specialist diet supplies</label><br>
+            <label><input type="checkbox" value="Frozen foods" checked> Frozen foods</label><br>
+            <label><input type="checkbox" value="Protein" checked> Protein</label><br>
+            <label><input type="checkbox" value="Dairy and milk products" checked> Dairy and milk products</label><br>
+            <label><input type="checkbox" value="Bakery" checked> Bakery</label><br>
+            <label><input type="checkbox" value="Catering Supplies" checked> Catering Supplies</label><br>
+            <label><input type="checkbox" value="Waste" checked> Waste</label><br>
+            <label><input type="checkbox" value="Fresh fruit and veg" checked> Fresh fruit and veg</label>
+        </form>
+    </div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- PapaParse JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the map
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize the map centered on Sheffield
             var map = L.map('map', {
                 zoomControl: true,
                 maxZoom: 28,
                 minZoom: 1
             }).setView([53.3811, -1.4701], 9);
-            
+
             L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 opacity: 1.0,
                 attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
@@ -48,57 +71,96 @@
 
             // Define custom icons for categories
             var categoryIcons = {
-                "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',   
-                "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg', 
+                "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',
+                "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg',
                 "Frozen foods": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/frozenfood.svg',
-                "Protein": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/protein.svg',   
-                "Dairy and milk products": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/dairy.svg', 
-                "Bakery": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/75f5e54b0473f6808bb5e4858f576c3e1a68b3f7/Symbols/bread.svg',
+                "Protein": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/protein.svg',
+                "Dairy and milk products": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/dairy.svg',
+                "Bakery": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/bread.svg',
                 "Catering Supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/cateringsupplies.svg',
                 "Waste": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/waste.svg',
                 "Fresh fruit and veg": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/fruitveg.svg'
             };
 
+            // Object to store markers by category
+            var categoryMarkers = {};
+
             // Fetch and parse CSV data
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
-            
+
             Papa.parse(csvUrl, {
                 download: true,
                 header: true,
-                complete: function(results) {
+                complete: function (results) {
                     var data = results.data;
-                    data.forEach(function(row) {
-                        var lat = parseFloat(row.lat);   
-                        var lng = parseFloat(row.long); 
+
+                    // Loop through the data to create markers
+                    data.forEach(function (row) {
+                        var lat = parseFloat(row.lat);
+                        var lng = parseFloat(row.long);
                         if (!isNaN(lat) && !isNaN(lng)) {
-                            // Determine the appropriate icon based on category
-                            var category = row.Category || 'Default'; // Default if Category is missing
-                            var iconUrl = categoryIcons[category] || 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/default.svg'; // Default icon
-                            
+                            var category = row.Category || 'Default';
+                            var iconUrl = categoryIcons[category] || 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/default.svg';
+
                             var customIcon = L.icon({
                                 iconUrl: iconUrl,
-                                iconSize: [32, 32], // Size of the icon
-                                iconAnchor: [16, 32], // Anchor point of the icon
-                                popupAnchor: [0, -32] // Anchor point of the popup
+                                iconSize: [32, 32], 
+                                iconAnchor: [16, 32], 
+                                popupAnchor: [0, -32] 
                             });
 
-                            var marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+                            var marker = L.marker([lat, lng], { icon: customIcon });
                             var popupContent = [
                                 '<b>Supplier Name:</b> ' + (row.Supplier || 'N/A'),
                                 '<b>Category:</b> ' + (row.Category || 'N/A'),
                                 '<b>Website:</b> <a href="' + (row.Website || '#') + '" target="_blank">' + (row.Website || 'N/A') + '</a>',
                                 '<b>Email:</b> <a href="mailto:' + (row.Email || '') + '">' + (row.Email || 'N/A') + '</a>',
                                 '<b>Contact Number:</b> ' + (row.ContactNum || 'N/A')
-                            ].join('<br>');  // Join the array elements with a line break
+                            ].join('<br>');
 
                             marker.bindPopup(popupContent);
+
+                            // Add marker to the category group
+                            if (!categoryMarkers[category]) {
+                                categoryMarkers[category] = [];
+                            }
+                            categoryMarkers[category].push(marker);
+                            marker.addTo(map); // Add the marker initially
                         }
                     });
                 },
-                error: function(err) {
+                error: function (err) {
                     console.error('Error fetching or parsing data:', err);
                 }
             });
+
+            // Filter function
+            function filterMarkers() {
+                // Get selected categories from the filter form
+                var selectedCategories = [];
+                document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
+                    selectedCategories.push(input.value);
+                });
+
+                // Clear all markers
+                Object.keys(categoryMarkers).forEach(function (category) {
+                    categoryMarkers[category].forEach(function (marker) {
+                        map.removeLayer(marker);
+                    });
+                });
+
+                // Show only the selected category markers
+                selectedCategories.forEach(function (category) {
+                    if (categoryMarkers[category]) {
+                        categoryMarkers[category].forEach(function (marker) {
+                            marker.addTo(map);
+                        });
+                    }
+                });
+            }
+
+            // Add event listener to filter
+            document.getElementById('category-filter').addEventListener('change', filterMarkers);
         });
     </script>
 </body>
