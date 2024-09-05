@@ -1,0 +1,112 @@
+/**
+ * Custom function to get latitude from a UK postcode using postcodes.io
+ * @param {string} postcode - The postcode to geocode
+ * @return {number} Latitude
+ * @customfunction
+ */
+function GET_LATITUDE(postcode) {
+  if (postcode == '') return '';
+  
+  postcode = postcode.replace(/\s/g, ""); // Remove spaces from postcode
+
+  // Construct the API URL
+  const url = `https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`;
+  
+  try {
+    const response = UrlFetchApp.fetch(url);
+    const json = JSON.parse(response.getContentText());
+
+    if (json.status === 200) {
+      return json.result.latitude;
+    } else {
+      return 'Error';
+    }
+  } catch (error) {
+    return 'Error';
+  }
+}
+
+/**
+ * Custom function to get longitude from a UK postcode using postcodes.io
+ * @param {string} postcode - The postcode to geocode
+ * @return {number} Longitude
+ * @customfunction
+ */
+function GET_LONGITUDE(postcode) {
+  if (postcode == '') return '';
+  
+  postcode = postcode.replace(/\s/g, ""); // Remove spaces from postcode
+
+  // Construct the API URL
+  const url = `https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`;
+  
+  try {
+    const response = UrlFetchApp.fetch(url);
+    const json = JSON.parse(response.getContentText());
+
+    if (json.status === 200) {
+      return json.result.longitude;
+    } else {
+      return 'Error';
+    }
+  } catch (error) {
+    return 'Error';
+  }
+}
+
+
+function exportSheetAsCSV() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1'); 
+  var data = sheet.getDataRange().getValues();
+  var csv = "";
+
+  // Convert data to CSV format
+  data.forEach(function(row) {
+    csv += row.join(",") + "\n";
+  });
+
+  // Get the CSV file content
+  var csvBlob = Utilities.newBlob(csv, 'text/csv', 'sheet-data.csv');
+
+  // Send the CSV to GitHub
+  pushToGitHub(csvBlob);
+}
+
+function pushToGitHub(csvBlob) {
+  var githubUsername = 'NiddCN'; 
+  var repoName = 'FoodSuppliers'; 
+  var filePath = 'Data/FoodSuppliersData.csv'; // Path to the file in your GitHub repository
+  var githubToken = ''; // GitHub personal access token
+
+  var url = 'https://api.github.com/repos/' + githubUsername + '/' + repoName + '/contents/' + filePath;
+  
+  // Get the current content and SHA (needed for update)
+  var response = UrlFetchApp.fetch(url, {
+    method: 'get',
+    headers: {
+      'Authorization': 'token ' + githubToken
+    }
+  });
+  
+  var jsonResponse = JSON.parse(response.getContentText());
+  var sha = jsonResponse.sha;
+  
+  // Create the payload
+  var payload = {
+    message: 'Automated update of CSV',
+    content: Utilities.base64Encode(csvBlob.getBytes()), // Encode CSV as base64
+    sha: sha
+  };
+  
+  // Update the CSV on GitHub
+  var options = {
+    method: 'put',
+    contentType: 'application/json',
+    headers: {
+      'Authorization': 'token ' + githubToken
+    },
+    payload: JSON.stringify(payload)
+  };
+  
+  UrlFetchApp.fetch(url, options);
+}
