@@ -116,15 +116,25 @@
                             });
 
                             var marker = L.marker([lat, lng], { icon: customIcon });
-                            var popupContent = [
-                                '<b>Supplier Name:</b> ' + (row.Supplier || 'N/A'),
-                                '<b>Category:</b> ' + (row.Category || 'N/A'),
-                                '<b>Website:</b> <a href="' + (row.Website || '#') + '" target="_blank">' + (row.Website || 'N/A') + '</a>',
-                                '<b>Email:</b> <a href="mailto:' + (row.Email || '') + '">' + (row.Email || 'N/A') + '</a>',
-                                '<b>Contact Number:</b> ' + (row.ContactNum || 'N/A')
-                            ].join('<br>');
+                            var popupContent = [];
+                            
+                            if (row.Supplier && row.Supplier !== 'N/A') {
+                                popupContent.push('<b>Supplier Name:</b> ' + row.Supplier);
+                            }
+                            if (row.Category && row.Category !== 'N/A') {
+                                popupContent.push('<b>Category:</b> ' + row.Category);
+                            }
+                            if (row.Website && row.Website !== 'N/A') {
+                                popupContent.push('<b>Website:</b> <a href="' + row.Website + '" target="_blank">' + row.Website + '</a>');
+                            }
+                            if (row.Email && row.Email !== 'N/A') {
+                                popupContent.push('<b>Email:</b> <a href="mailto:' + row.Email + '">' + row.Email + '</a>');
+                            }
+                            if (row.ContactNum && row.ContactNum !== 'N/A') {
+                                popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
+                            }
 
-                            marker.bindPopup(popupContent);
+                            marker.bindPopup(popupContent.join('<br>'));
 
                             // Add marker to the category group
                             if (!categoryMarkers[category]) {
