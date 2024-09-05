@@ -27,9 +27,6 @@ Protein,Owen Taylor & Sons Ltd Butchers,DE55 1LA,01773 603351,https://www.owenta
 Bakery,Roses,S4 7QQ,0114 243 4160,https://roses-the-bakers.com/contact/,info@roses-the-bakers.com,53.398186,-1.443225
 Dairy and milk products,Our Cow molly,S6 6GW,0114 233 3697,https://www.ourcowmolly.co.uk/find-us,,53.399198,-1.57866
 Ready to eat meals,Sandwich king,LS7 1RF,0113 242 6031,https://www.sandwichkinguk.com/contact-8,enquiries@sandwichkinguk.com,53.80815,-1.531115
-Frozen foods,,GL5 4EJ,,,,#ERROR!,#ERROR!
-Protein,,LD2 3LU,,,,52.179748,-3.557976
-Protein,Nid House,S11 8UJ,,,,53.366076,-1.501756
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
@@ -698,6 +695,9 @@ Protein,Nid House,S11 8UJ,,,,53.366076,-1.501756
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,#ERROR!
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
