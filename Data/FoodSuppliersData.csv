@@ -31,25 +31,25 @@ Protein,Chicken Joes,WS9 8UR,01922 745 818,https://www.lovejoes.co.uk/,sales@lov
 ,Chilled Food Company,WF2 9LP,,,,53.686477,-1.539976
 ,Chocolatey Claire Cakes,S75 2QB,,,,53.560152,-1.498545
 ,Coca Cola,WF2 0XR,,,,53.71879,-1.521406
-,Coptrin,WF2 7AL,,,,#ERROR!,#ERROR!
-,Coultons/Happy Bread,BD4 6HQ,,,,53.770309,#ERROR!
+,Coptrin,WF2 7AL,,,,53.665387,-1.509467
+,Coultons/Happy Bread,BD4 6HQ,,,,53.770309,-1.723715
 Fresh fruit and veg,Country Fresh Foods ,S20 3GH,0114 248 1188,https://www.countryfreshfoods.co.uk/contact-us/,orders@countryfreshfoods.co.uk,53.331398,-1.337362
-,Creed Food Service,GL52 6TQ,,,,#ERROR!,#ERROR!
-,Cryer & Stott,WF10 2BP,,,,#ERROR!,#ERROR!
-,D and E Wholesale Ltd (LSA Meats),S9 3JL,,,,#ERROR!,#ERROR!
-,Delice De France,UB2 5LJ,,,,#ERROR!,#ERROR!
+,Creed Food Service,GL52 6TQ,,,,51.899125,#ERROR!
+,Cryer & Stott,WF10 2BP,,,,53.743718,#ERROR!
+,D and E Wholesale Ltd (LSA Meats),S9 3JL,,,,#ERROR!,-1.434964
+,Delice De France,UB2 5LJ,,,,51.502041,#ERROR!
 ,Derbyshire Pie Company,S80 3LR,,,,#ERROR!,#ERROR!
-,Direct Seafoods,N1C 4PD,,,,#ERROR!,#ERROR!
-,Dough boy,S1 4GE,,,,#ERROR!,#ERROR!
-,Dunsters Farms Ltd,BL9 7BR,,,,#ERROR!,#ERROR!
-Ready to eat meals,E-Foods,B45 9PZ,,,,#ERROR!,#ERROR!
+,Direct Seafoods,N1C 4PD,,,,#ERROR!,-0.130686
+,Dough boy,S1 4GE,,,,53.379722,#ERROR!
+,Dunsters Farms Ltd,BL9 7BR,,,,#ERROR!,-2.275376
+Ready to eat meals,E-Foods,B45 9PZ,,,,#ERROR!,-2.010206
 Dairy and milk products,EasiYo,DE21 4SZ,,https://uk.easiyo.com/pages/contact-us,,#ERROR!,#ERROR!
-,Edo Sushi,S1 2EP,,,,#ERROR!,#ERROR!
+,Edo Sushi,S1 2EP,,,,#ERROR!,-1.467115
 ,Fine Cheeses (Michael Lee),WF7 6FE,,,,#ERROR!,#ERROR!
-,First Choice Catering Spares Ltd,WS11 8LD,,,,#ERROR!,#ERROR!
+,First Choice Catering Spares Ltd,WS11 8LD,,,,#ERROR!,-2.002997
 ,Forest Garden Produce,,,,,#ERROR!,#ERROR!
 ,Foundation Packaging,DN2 4SQ,,,,#ERROR!,#ERROR!
-,Frazer's Coffee,S3 8DD,,,,#ERROR!,#ERROR!
+,Frazer's Coffee,S3 8DD,,,,53.392296,#ERROR!
 ,Fresh Food for Now Company,Pl17 7XG,,,,#ERROR!,#ERROR!
 ,Freshfayre,LS10 1BY,,,,#ERROR!,#ERROR!
 ,Freshways,M12 6LL,,,,#ERROR!,#ERROR!
@@ -62,7 +62,6 @@ Fresh fruit and veg,GW Price,S21 4DL,01246 432818,https://gwpriceltd.co.uk/conta
 ,Heist Brew Co,S3 8AT,,,,#ERROR!,#ERROR!
 ,Hendersons (Sheffield) Ltd,S9 4WQ,,,,#ERROR!,#ERROR!
 ,Hodmedods,NR34 8DQ,,,,#ERROR!,#ERROR!
-,Holdsworth,SK17 8LN,,,,#ERROR!,#ERROR!
 ,Holdsworth Food Service,S44 5FB,,,,#ERROR!,#ERROR!
 ,Hopwells,S13 9NP,,,,#ERROR!,#ERROR!
 ,HOTEL COMPLIMENTARY PL,TN28 8LH,,,,#ERROR!,#ERROR!
@@ -151,7 +150,8 @@ Waste,Veolia,S4 7ZJ,0114 228 3550,sheffield.veolia.co.uk,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
-,,,,,,#ERROR!,#ERROR!
+,,,,,,#ERROR!,
+,,,,,,,#ERROR!
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
