@@ -21,29 +21,21 @@ Frozen foods,Bidfood,NG16 4HY,0370 3663 420,https://www.bidfood.co.uk/get-in-tou
 Protein,Binghams,S10 1LD,01142661676,http://www.binghamsfood.co.uk/where-to-buy/,,53.385787,-1.503767
 ,Blue Bee Brewery,S3 8AB,,,,53.397131,-1.484717
 ,Bradfield brewery,S6 6LG,,,,53.427972,-1.597277
-Frozen foods,Brake Brothers,WF9 5EG,08448004900,https://www.brake.co.uk/,,#ERROR!,#ERROR!
-,Brakes,WF9 5EG,,,,53.625606,-1.366136
-,Brakes (Frozen),WF9 5EG,,,,53.625606,-1.366136
-,Brakes Food Service,WF9 5EG,,,,53.625606,-1.366136
-,Café Olgy,S9 1DA,,,,#ERROR!,#ERROR!
-,Cafeology,S9 1DA,,,,53.416839,-1.399124
+Frozen foods,Brake Brothers,WF9 5EG,08448004900,https://www.brake.co.uk/,,53.625606,-1.366136
 ,Cafeology Ltd,S9 1DA,,,,53.416839,-1.399124
-,Carlsberg Marston's Brewing Company,NN1 1PZ,,,,#ERROR!,#ERROR!
-,Casa Gomez,S21 4HG,,,,#ERROR!,#ERROR!
-Catering Supplies,Catering 24,DE7 8FU,0115 944 4434,https://www.catering24.co.uk/,hello@catering24.co.uk,#ERROR!,#ERROR!
-,Catering 24,DE7 8YA,,,,#ERROR!,#ERROR!
-,Catering24 Ltd,DE7 8YA,,,,52.977285,#ERROR!
+,Carlsberg Marston's Brewing Company,NN1 1PZ,,,,52.232359,-0.899224
+,Casa Gomez,S21 4HG,,,,53.30845,-1.375898
+Catering Supplies,Catering 24,DE7 8FU,0115 944 4434,https://www.catering24.co.uk/,hello@catering24.co.uk,52.978973,#ERROR!
 ,CAWA Bakery Ltd,S9 1BG,,,,#ERROR!,#ERROR!
 Protein,Chicken Joes,WS9 8UR,01922 745 818,https://www.lovejoes.co.uk/,sales@lovejoes.co.uk,#ERROR!,#ERROR!
 ,Chilled Food Company,WF2 9LP,,,,#ERROR!,#ERROR!
 ,Chocolatey Claire Cakes,S75 2QB,,,,#ERROR!,#ERROR!
 ,Coca Cola,WF2 0XR,,,,#ERROR!,#ERROR!
-,Coca-Cola Enterprises,NG16 4HY,,,,#ERROR!,#ERROR!
 ,Coptrin,WF2 7AL,,,,#ERROR!,#ERROR!
 ,Coultons/Happy Bread,BD4 6HQ,,,,#ERROR!,#ERROR!
 ,Country fresh,S20 3GH,,,,#ERROR!,#ERROR!
-,Country Fresh Foods,S20 3GH,,,,53.331398,-1.337362
-Fresh fruit and veg,Country Fresh Foods ,S20 3GH,0114 248 1188,https://www.countryfreshfoods.co.uk/contact-us/,orders@countryfreshfoods.co.uk,53.331398,-1.337362
+,Country Fresh Foods,S20 3GH,,,,#ERROR!,#ERROR!
+Fresh fruit and veg,Country Fresh Foods ,S20 3GH,0114 248 1188,https://www.countryfreshfoods.co.uk/contact-us/,orders@countryfreshfoods.co.uk,#ERROR!,#ERROR!
 ,Creed Food Service,GL52 6TQ,,,,#ERROR!,#ERROR!
 ,Cryer & Stott,WF10 2BP,,,,#ERROR!,#ERROR!
 ,D and E Wholesale Ltd (LSA Meats),S9 3JL,,,,#ERROR!,#ERROR!
@@ -65,7 +57,7 @@ Dairy and milk products,EasiYo,DE21 4SZ,,https://uk.easiyo.com/pages/contact-us,
 ,Freshways,M12 6LL,,,,#ERROR!,#ERROR!
 ,Grissly Grains Brewing,S6 5AR,,,,#ERROR!,#ERROR!
 Fresh fruit and veg,GW Price,S21 4DL,01246 432818,https://gwpriceltd.co.uk/contact/,,#ERROR!,#ERROR!
-,GW Price,S21 4DL,,,,53.306777,#ERROR!
+,GW Price,S21 4DL,,,,#ERROR!,#ERROR!
 ,GW Price Ltd,S21 4DH,,,,#ERROR!,#ERROR!
 ,Hebdige Butchers,S9 1GB,,,,#ERROR!,#ERROR!
 ,Hector Andrew (Our Cow Molly),S6 6GW,,,,#ERROR!,#ERROR!
@@ -85,12 +77,12 @@ Bakery,Johal Dairies,WV1 1PN,01902 871 428,https://www.johaldairies.co.uk/contac
 ,Jones Pies,HD1 3RR,,,,#ERROR!,#ERROR!
 Protein,JW Young,S9 3WG,0114 243 1131,https://jwyoungbutchers.wordpress.com,,#ERROR!,#ERROR!
 ,Keylink,S25 3AF,,,,#ERROR!,#ERROR!
-,Keylink Ltd,S25 3AF,,,,53.370367,-1.231055
+,Keylink Ltd,S25 3AF,,,,#ERROR!,#ERROR!
 ,King Asia Foods,DN4 5JJ,,,,#ERROR!,#ERROR!
 ,Le Bon Vin,S9 2SP,,,,#ERROR!,#ERROR!
-,Le Bon Vin Ltd,S9 2SP,,,,53.399791,-1.436737
+,Le Bon Vin Ltd,S9 2SP,,,,#ERROR!,#ERROR!
 ,Lembas,S8 9QR,,,,#ERROR!,#ERROR!
-,Lembas (health food shop),S8 9QR,,,,53.358394,-1.475387
+,Lembas (health food shop),S8 9QR,,,,#ERROR!,#ERROR!
 ,Libra Drinks Wholesale Ltd,NG7 2NN,,,,#ERROR!,#ERROR!
 ,Life Water,BN41 1DH,,,,#ERROR!,#ERROR!
 Catering Supplies,Lockhart Catering Equipment,RG7 4XE,0370 167 8678,https://www.lockhart.co.uk/contact-us,,#ERROR!,#ERROR!
@@ -107,7 +99,7 @@ Catering Supplies,Lockhart Catering Equipment,RG7 4XE,0370 167 8678,https://www.
 ,Noble Isle Limited,L7 2PF,,,,#ERROR!,#ERROR!
 ,Nutripack,CV11 6GY,,,,#ERROR!,#ERROR!
 Dairy and milk products,Our Cow molly,S6 6GW,0114 233 3697,https://www.ourcowmolly.co.uk/find-us,,#ERROR!,#ERROR!
-,Our Cow molly,S6 6GW,,,,53.399198,-1.57866
+,Our Cow molly,S6 6GW,,,,#ERROR!,#ERROR!
 ,Owen Taylor,DE55 1LA,,,,#ERROR!,#ERROR!
 Protein,Owen Taylor & Sons Ltd Butchers,DE55 1LA,01773 603351,https://www.owentaylor.co.uk/contact-us/,salesorders@owentaylor.co.uk,#ERROR!,#ERROR!
 Ready to eat meals,Pasta King ,TQ12 4SG,0800 458 7898  ,https://www.pastaking.co.uk/enquire/,enquiries@pastaking.co.uk,#ERROR!,#ERROR!
@@ -123,11 +115,11 @@ Waste,Refood UK,DN5 9TL,0800 011 3214,https://refood.co.uk,,#ERROR!,#ERROR!
 ,Regather,S11 8BU,,,,#ERROR!,#ERROR!
 ,Roberts Bakery,DE7 8EF,,,,#ERROR!,#ERROR!
 Bakery,Roses,S4 7QQ,0114 243 4160,https://roses-the-bakers.com/contact/,info@roses-the-bakers.com,#ERROR!,#ERROR!
-,Roses,S4 7QQ,,,,#ERROR!,-1.443225
-,Roses The Bakers,S4 7QQ,,,,53.398186,-1.443225
+,Roses,S4 7QQ,,,,#ERROR!,#ERROR!
+,Roses The Bakers,S4 7QQ,,,,#ERROR!,#ERROR!
 ,Russums,S60 1LB,,,,#ERROR!,#ERROR!
 Ready to eat meals,Sandwich king,LS7 1RF,0113 242 6031,https://www.sandwichkinguk.com/contact-8,enquiries@sandwichkinguk.com,#ERROR!,#ERROR!
-,Sandwich King,LS7 1RF,,,,53.80815,-1.531115
+,Sandwich King,LS7 1RF,,,,#ERROR!,#ERROR!
 ,Seabrooks,BD8 9AJ,,,,#ERROR!,#ERROR!
 ,Sheffield Catering Supplies,S3 8DG,,,,#ERROR!,#ERROR!
 ,Sheffield Gin (True North Brew Co),S1 4GX,,,,#ERROR!,#ERROR!
@@ -149,7 +141,7 @@ Ready to eat meals,Sandwich king,LS7 1RF,0113 242 6031,https://www.sandwichkingu
 ,Town & Country Fine Foods,SL1 4XX,,,,#ERROR!,#ERROR!
 ,Triple Point Brewing Ltd,S1 4SQ,,,,#ERROR!,#ERROR!
 Protein,Tugo Food Systems,OX17 3SN,01295 367351,https://tugo.co.uk/,,#ERROR!,#ERROR!
-Frozen foods,Tugo Food Systems,OX17 3SN,01295 367351,https://tugo.co.uk/,,52.012261,-1.291538
+Frozen foods,Tugo Food Systems,OX17 3SN,01295 367351,https://tugo.co.uk/,,#ERROR!,#ERROR!
 Protein,Underwood Meat Company,S60 1RU,01709 789100,https://www.underwoodmeat.co.uk/,sales.umcsouth@underwoodmeat.co.uk,#ERROR!,#ERROR!
 ,Vegetarian Express Ltd,WD24 7RY,,,,#ERROR!,#ERROR!
 Waste,Veolia,S4 7ZJ,0114 228 3550,sheffield.veolia.co.uk,,#ERROR!,#ERROR!
@@ -161,6 +153,10 @@ Waste,Veolia,S4 7ZJ,0114 228 3550,sheffield.veolia.co.uk,,#ERROR!,#ERROR!
 ,Youngs,S9 3WG,,,,#ERROR!,#ERROR!
 ,Zenith (chemicals),HX5 9JP,,,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
+,,,,,,#ERROR!,#ERROR!
+,,,,,,#ERROR!,#ERROR!
+,,,,,,#ERROR!,
+,,,,,,,
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
