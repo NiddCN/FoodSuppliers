@@ -26,14 +26,14 @@ Frozen foods,Brake Brothers,WF9 5EG,08448004900,https://www.brake.co.uk/,,53.625
 ,Carlsberg Marston's Brewing Company,NN1 1PZ,,,,52.232359,-0.899224
 ,Casa Gomez,S21 4HG,,,,53.30845,-1.375898
 Catering Supplies,Catering 24,DE7 8FU,0115 944 4434,https://www.catering24.co.uk/,hello@catering24.co.uk,52.978973,-1.31835
-,CAWA Bakery Ltd,S9 1BG,,,,#ERROR!,#ERROR!
-Protein,Chicken Joes,WS9 8UR,01922 745 818,https://www.lovejoes.co.uk/,sales@lovejoes.co.uk,#ERROR!,#ERROR!
-,Chilled Food Company,WF2 9LP,,,,#ERROR!,#ERROR!
-,Chocolatey Claire Cakes,S75 2QB,,,,#ERROR!,#ERROR!
-,Coca Cola,WF2 0XR,,,,#ERROR!,#ERROR!
+,CAWA Bakery Ltd,S9 1BG,,,,53.418513,-1.396001
+Protein,Chicken Joes,WS9 8UR,01922 745 818,https://www.lovejoes.co.uk/,sales@lovejoes.co.uk,52.616031,-1.93113
+,Chilled Food Company,WF2 9LP,,,,53.686477,-1.539976
+,Chocolatey Claire Cakes,S75 2QB,,,,53.560152,-1.498545
+,Coca Cola,WF2 0XR,,,,53.71879,-1.521406
 ,Coptrin,WF2 7AL,,,,#ERROR!,#ERROR!
-,Coultons/Happy Bread,BD4 6HQ,,,,#ERROR!,#ERROR!
-Fresh fruit and veg,Country Fresh Foods ,S20 3GH,0114 248 1188,https://www.countryfreshfoods.co.uk/contact-us/,orders@countryfreshfoods.co.uk,#ERROR!,#ERROR!
+,Coultons/Happy Bread,BD4 6HQ,,,,53.770309,#ERROR!
+Fresh fruit and veg,Country Fresh Foods ,S20 3GH,0114 248 1188,https://www.countryfreshfoods.co.uk/contact-us/,orders@countryfreshfoods.co.uk,53.331398,-1.337362
 ,Creed Food Service,GL52 6TQ,,,,#ERROR!,#ERROR!
 ,Cryer & Stott,WF10 2BP,,,,#ERROR!,#ERROR!
 ,D and E Wholesale Ltd (LSA Meats),S9 3JL,,,,#ERROR!,#ERROR!
@@ -55,8 +55,6 @@ Dairy and milk products,EasiYo,DE21 4SZ,,https://uk.easiyo.com/pages/contact-us,
 ,Freshways,M12 6LL,,,,#ERROR!,#ERROR!
 ,Grissly Grains Brewing,S6 5AR,,,,#ERROR!,#ERROR!
 Fresh fruit and veg,GW Price,S21 4DL,01246 432818,https://gwpriceltd.co.uk/contact/,,#ERROR!,#ERROR!
-,GW Price,S21 4DL,,,,#ERROR!,#ERROR!
-,GW Price Ltd,S21 4DH,,,,#ERROR!,#ERROR!
 ,Hebdige Butchers,S9 1GB,,,,#ERROR!,#ERROR!
 ,Hector Andrew (Our Cow Molly),S6 6GW,,,,#ERROR!,#ERROR!
 ,Hedgerow,S4 8LL,,,,#ERROR!,#ERROR!
@@ -154,11 +152,6 @@ Waste,Veolia,S4 7ZJ,0114 228 3550,sheffield.veolia.co.uk,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
-,,,,,,#ERROR!,#ERROR!
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
