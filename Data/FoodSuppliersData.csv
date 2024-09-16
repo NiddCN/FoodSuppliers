@@ -34,27 +34,27 @@ Protein,Chicken Joes,WS9 8UR,01922 745 818,https://www.lovejoes.co.uk/,sales@lov
 ,Coptrin,WF2 7AL,,,,53.665387,-1.509467
 ,Coultons/Happy Bread,BD4 6HQ,,,,53.770309,-1.723715
 Fresh fruit and veg,Country Fresh Foods ,S20 3GH,0114 248 1188,https://www.countryfreshfoods.co.uk/contact-us/,orders@countryfreshfoods.co.uk,53.331398,-1.337362
-,Creed Food Service,GL52 6TQ,,,,51.899125,#ERROR!
-,Cryer & Stott,WF10 2BP,,,,53.743718,#ERROR!
-,D and E Wholesale Ltd (LSA Meats),S9 3JL,,,,#ERROR!,-1.434964
-,Delice De France,UB2 5LJ,,,,51.502041,#ERROR!
-,Derbyshire Pie Company,S80 3LR,,,,#ERROR!,#ERROR!
-,Direct Seafoods,N1C 4PD,,,,#ERROR!,-0.130686
-,Dough boy,S1 4GE,,,,53.379722,#ERROR!
-,Dunsters Farms Ltd,BL9 7BR,,,,#ERROR!,-2.275376
-Ready to eat meals,E-Foods,B45 9PZ,,,,#ERROR!,-2.010206
-Dairy and milk products,EasiYo,DE21 4SZ,,https://uk.easiyo.com/pages/contact-us,,#ERROR!,#ERROR!
-,Edo Sushi,S1 2EP,,,,#ERROR!,-1.467115
-,Fine Cheeses (Michael Lee),WF7 6FE,,,,#ERROR!,#ERROR!
-,First Choice Catering Spares Ltd,WS11 8LD,,,,#ERROR!,-2.002997
-,Forest Garden Produce,,,,,#ERROR!,#ERROR!
-,Foundation Packaging,DN2 4SQ,,,,#ERROR!,#ERROR!
-,Frazer's Coffee,S3 8DD,,,,53.392296,#ERROR!
-,Fresh Food for Now Company,Pl17 7XG,,,,#ERROR!,#ERROR!
-,Freshfayre,LS10 1BY,,,,#ERROR!,#ERROR!
-,Freshways,M12 6LL,,,,#ERROR!,#ERROR!
-,Grissly Grains Brewing,S6 5AR,,,,#ERROR!,#ERROR!
-Fresh fruit and veg,GW Price,S21 4DL,01246 432818,https://gwpriceltd.co.uk/contact/,,#ERROR!,#ERROR!
+,Creed Food Service,GL52 6TQ,,,,51.899125,-2.054149
+,Cryer & Stott,WF10 2BP,,,,53.743718,-1.365314
+,D and E Wholesale Ltd (LSA Meats),S9 3JL,,,,53.389446,-1.434964
+,Delice De France,UB2 5LJ,,,,51.502041,-0.400672
+,Derbyshire Pie Company,S80 3LR,,,,53.261435,-1.168575
+,Direct Seafoods,N1C 4PD,,,,51.540387,-0.130686
+,Dough boy,S1 4GE,,,,53.379722,-1.474914
+,Dunsters Farms Ltd,BL9 7BR,,,,53.58927,-2.275376
+Ready to eat meals,E-Foods,B45 9PZ,,,,52.39778,-2.010206
+Dairy and milk products,EasiYo,DE21 4SZ,,https://uk.easiyo.com/pages/contact-us,,52.936402,-1.466825
+,Edo Sushi,S1 2EP,,,,53.383148,-1.467115
+,Fine Cheeses (Michael Lee),WF7 6FE,,,,53.68034,-1.370173
+,First Choice Catering Spares Ltd,WS11 8LD,,,,52.671246,-2.002997
+,Forest Garden Produce,,,,,,
+,Foundation Packaging,DN2 4SQ,,,,53.543262,-1.079491
+,Frazer's Coffee,S3 8DD,,,,53.392296,-1.47258
+,Fresh Food for Now Company,Pl17 7XG,,,,50.497471,-4.316681
+,Freshfayre,LS10 1BY,,,,53.778619,-1.517904
+,Freshways,M12 6LL,,,,53.474869,-2.210766
+,Grissly Grains Brewing,S6 5AR,,,,53.396844,-1.510361
+Fresh fruit and veg,GW Price,S21 4DL,01246 432818,https://gwpriceltd.co.uk/contact/,,53.306777,-1.365462
 ,Hebdige Butchers,S9 1GB,,,,#ERROR!,#ERROR!
 ,Hector Andrew (Our Cow Molly),S6 6GW,,,,#ERROR!,#ERROR!
 ,Hedgerow,S4 8LL,,,,#ERROR!,#ERROR!
@@ -150,8 +150,6 @@ Waste,Veolia,S4 7ZJ,0114 228 3550,sheffield.veolia.co.uk,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
 ,,,,,,#ERROR!,#ERROR!
-,,,,,,#ERROR!,
-,,,,,,,#ERROR!
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
