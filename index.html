@@ -117,7 +117,10 @@
 
                             var marker = L.marker([lat, lng], { icon: customIcon });
                             var popupContent = [];
-                            
+
+                            if (row.Public && row.Public !== 'N/A') {
+                                popupContent.push(row.Public);
+                            }
                             if (row.Supplier && row.Supplier !== 'N/A') {
                                 popupContent.push('<b>Supplier Name:</b> ' + row.Supplier);
                             }
@@ -133,9 +136,7 @@
                             if (row.ContactNum && row.ContactNum !== 'N/A') {
                                 popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
                             }
-                            if (row.Public && row.Public !== 'N/A') {
-                                popupContent.push(row.Public);
-                            }
+                            
 
                             marker.bindPopup(popupContent.join('<br>'));
 
