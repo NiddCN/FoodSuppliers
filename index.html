@@ -133,6 +133,9 @@
                             if (row.ContactNum && row.ContactNum !== 'N/A') {
                                 popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
                             }
+                            if (row.Public && row.Public !== 'N/A') {
+                                popupContent.push(<b>row.Public</b>);
+                            }
 
                             marker.bindPopup(popupContent.join('<br>'));
 
