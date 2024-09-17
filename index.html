@@ -134,7 +134,7 @@
                                 popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
                             }
                             if (row.Public && row.Public !== 'N/A') {
-                                popupContent.push(<b>row.Public</b>);
+                                popupContent.push(row.Public);
                             }
 
                             marker.bindPopup(popupContent.join('<br>'));
