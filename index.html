@@ -6,11 +6,9 @@
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    
-    <!-- Leaflet and DataTables CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
     <title>Sheffield Region Food Providers</title>
     
     <style>
@@ -24,6 +22,7 @@
             width: 100%;
             margin-top: 10px;
             border-collapse: collapse;
+            font-family: 'Noto Sans', sans-serif;
         }
         #data-table th, #data-table td {
             border: 1px solid #ddd;
@@ -37,11 +36,42 @@
             height: 400px;
             overflow-y: auto; /* Allow table to be scrollable */
         }
+        .custom-icon {
+            width: 32px;
+            height: 32px;
+        }
+        #filter-panel {
+            position: absolute;
+            top: 90px;
+            left: 10px;
+            z-index: 1000;
+            background-color: white;
+            padding: 2px;
+            margin: 0px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 12px;
+            width: 160px;
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
     
+    <div id="filter-panel">
+        <h3>   Category</h3>
+        <form id="category-filter">
+            <label><input type="checkbox" value="Fresh fruit and veg" checked> Fresh fruit and veg</label><br>
+            <label><input type="checkbox" value="Dairy and milk products" checked> Dairy and milk products</label><br>
+            <label><input type="checkbox" value="Protein" checked> Protein</label><br>
+            <label><input type="checkbox" value="Bakery" checked> Bakery</label><br>
+            <label><input type="checkbox" value="Ready to eat meals" checked> Ready to eat meals</label><br>
+            <label><input type="checkbox" value="Specialist diet supplies" checked> Specialist diet supplies</label><br>
+            <label><input type="checkbox" value="Frozen foods" checked> Frozen foods</label><br>                   
+            <label><input type="checkbox" value="Catering Supplies" checked> Catering Supplies</label><br>
+            <label><input type="checkbox" value="Waste" checked> Waste</label>
+            
     <!-- Container for the table -->
     <div id="table-container">
         <table id="data-table" class="display">
@@ -80,8 +110,14 @@
                 "Frozen foods": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/frozenfood.svg',
                 "Protein": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/protein.svg',
                 "Dairy and milk products": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/dairy.svg',
-                "Bakery": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/bread.svg'
+                "Bakery": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/bread.svg',
+                "Catering Supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/cateringsupplies.svg',
+                "Waste": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/waste.svg',
+                "Fresh fruit and veg": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/fruitveg.svg'
             };
+
+            // Object to store markers by category
+            var categoryMarkers = {};
 
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
 
@@ -130,8 +166,13 @@
                             }
 
                             marker.bindPopup(popupContent.join('<br>'));
+                            
+                            if (!categoryMarkers[category]) {
+                                categoryMarkers[category] = [];
+                            }
+                            categoryMarkers[category].push(marker);
                             marker.addTo(map);
-
+                            
                             // Add a row to the table
                             var tr = document.createElement('tr');
                             tr.innerHTML = `
@@ -152,6 +193,33 @@
                     console.error('Error fetching or parsing data:', err);
                 }
             });
+            // Filter function
+            function filterMarkers() {
+                // Get selected categories from the filter form
+                var selectedCategories = [];
+                document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
+                    selectedCategories.push(input.value);
+                });
+
+                // Clear all markers
+                Object.keys(categoryMarkers).forEach(function (category) {
+                    categoryMarkers[category].forEach(function (marker) {
+                        map.removeLayer(marker);
+                    });
+                });
+
+                // Show only the selected category markers
+                selectedCategories.forEach(function (category) {
+                    if (categoryMarkers[category]) {
+                        categoryMarkers[category].forEach(function (marker) {
+                            marker.addTo(map);
+                        });
+                    }
+                });
+            }
+
+            // Add event listener to filter
+            document.getElementById('category-filter').addEventListener('change', filterMarkers);
         });
     </script>
 </body>
