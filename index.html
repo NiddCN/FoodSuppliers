@@ -59,6 +59,10 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- PapaParse JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="./content/js/jquery-3.4.1.min.js"></script>
+	<script src="./content/js/polyfill.min.js"></script>
+	<script src="./content/js/d3.v4.min.js"></script>
+	<script src="./content/js/datatables.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -183,6 +187,43 @@
             // Add event listener to filter
             document.getElementById('category-filter').addEventListener('change', filterMarkers);
         });
+        var tableRecords = $("#tableRecords").dataTable({
+					"bDeferRender": true,
+					"aaData": DimID.top(Infinity),
+					"responsive": true,
+					"autoWidth": false,
+					"bDestroy": true,
+					"bFilter": false,
+					"pagingType": 'simple',
+					"fixedHeader": true,
+					dom: 'frBtpi',
+					buttons: [
+						'copy', 'excel', 'csv'
+					],
+					"columns": [
+						{ "data": "Supplier"},
+						{ "data": "Category"},
+						{ "data": "ContactNum"},
+						{ "data": "Website"},
+						{ "data": "Email"}
+					],
+					"columnDefs": [
+						{
+							"targets": 2,
+							"data": "website",
+							"render": function (data, type, row, meta) {
+							  return '<a href="'+data+'" target=_"blank">' + data + '</a>';
+							}
+						},
+						{
+							"targets": 3,
+							"data": "email",
+							"render": function (data, type, row, meta) {
+							  return '<a href="mailto:'+data+'">' + data + '</a>';
+							}
+						}
+					]
+					});
     </script>
 </body>
 </html>
