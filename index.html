@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,96 +6,83 @@
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- Leaflet and DataTables CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    
     <title>Sheffield Region Food Providers</title>
+    
     <style>
         html, body, #map {
             width: 100%;
-            height: 80%;
+            height: 80%; /* Adjust map height to make room for the table */
             padding: 0;
             margin: 0;
         }
-        .custom-icon {
-            width: 32px;
-            height: 32px;
+        #data-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
         }
-        #filter-panel {
-            position: absolute;
-            top: 90px;
-            left: 10px;
-            z-index: 1000;
-            background-color: white;
-            padding: 2px;
-            margin: 0px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            font-family: 'Noto Sans', sans-serif;
-            font-size: 12px;
-            width: 160px;
+        #data-table th, #data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #data-table th {
+            background-color: #f2f2f2;
+        }
+        #table-container {
+            height: 20%;
+            overflow-y: auto; /* Allow table to be scrollable */
         }
     </style>
 </head>
 <body>
     <div id="map"></div>
-    <div id="filter-panel">
-        <h3>   Category</h3>
-        <form id="category-filter">
-            <label><input type="checkbox" value="Fresh fruit and veg" checked> Fresh fruit and veg</label><br>
-            <label><input type="checkbox" value="Dairy and milk products" checked> Dairy and milk products</label><br>
-            <label><input type="checkbox" value="Protein" checked> Protein</label><br>
-            <label><input type="checkbox" value="Bakery" checked> Bakery</label><br>
-            <label><input type="checkbox" value="Ready to eat meals" checked> Ready to eat meals</label><br>
-            <label><input type="checkbox" value="Specialist diet supplies" checked> Specialist diet supplies</label><br>
-            <label><input type="checkbox" value="Frozen foods" checked> Frozen foods</label><br>                   
-            <label><input type="checkbox" value="Catering Supplies" checked> Catering Supplies</label><br>
-            <label><input type="checkbox" value="Waste" checked> Waste</label>
-            
-        </form>
+    
+    <!-- Container for the table -->
+    <div id="table-container">
+        <table id="data-table" class="display">
+            <thead>
+                <tr>
+                    <th>Supplier Name</th>
+                    <th>Category</th>
+                    <th>Website</th>
+                    <th>Email</th>
+                    <th>Contact Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be added dynamically -->
+            </tbody>
+        </table>
     </div>
 
-    <!-- Leaflet JS -->
+    <!-- Leaflet, jQuery, DataTables, PapaParse JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- PapaParse JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
 
-	
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Initialize the map centered on Sheffield
-            var map = L.map('map', {
-                zoomControl: true,
-                maxZoom: 28,
-                minZoom: 1
-            }).setView([53.3811, -1.4701], 9);
+            var map = L.map('map').setView([53.3811, -1.4701], 9);
 
             L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                opacity: 1.0,
-                attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
-                minZoom: 1,
-                maxZoom: 28
+                attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            // Define custom icons for categories
             var categoryIcons = {
                 "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',
                 "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg',
                 "Frozen foods": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/frozenfood.svg',
                 "Protein": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/protein.svg',
                 "Dairy and milk products": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/dairy.svg',
-                "Bakery": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/bread.svg',
-                "Catering Supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/cateringsupplies.svg',
-                "Waste": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/waste.svg',
-                "Fresh fruit and veg": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/fruitveg.svg'
+                "Bakery": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/bread.svg'
             };
 
-            // Object to store markers by category
-            var categoryMarkers = {};
-
-            // Fetch and parse CSV data
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
 
             Papa.parse(csvUrl, {
@@ -104,11 +90,12 @@
                 header: true,
                 complete: function (results) {
                     var data = results.data;
+                    var tableBody = document.querySelector('#data-table tbody');
 
-                    // Loop through the data to create markers
                     data.forEach(function (row) {
                         var lat = parseFloat(row.lat);
                         var lng = parseFloat(row.long);
+
                         if (!isNaN(lat) && !isNaN(lng)) {
                             var category = row.Category || 'Default';
                             var iconUrl = categoryIcons[category] || 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/default.svg';
@@ -141,88 +128,31 @@
                             if (row.ContactNum && row.ContactNum !== 'N/A') {
                                 popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
                             }
-                            
 
                             marker.bindPopup(popupContent.join('<br>'));
+                            marker.addTo(map);
 
-                            // Add marker to the category group
-                            if (!categoryMarkers[category]) {
-                                categoryMarkers[category] = [];
-                            }
-                            categoryMarkers[category].push(marker);
-                            marker.addTo(map); // Add the marker initially
+                            // Add a row to the table
+                            var tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${row.Supplier || 'N/A'}</td>
+                                <td>${row.Category || 'N/A'}</td>
+                                <td>${row.Website ? '<a href="' + row.Website + '" target="_blank">' + row.Website + '</a>' : 'N/A'}</td>
+                                <td>${row.Email ? '<a href="mailto:' + row.Email + '">' + row.Email + '</a>' : 'N/A'}</td>
+                                <td>${row.ContactNum || 'N/A'}</td>
+                            `;
+                            tableBody.appendChild(tr);
                         }
                     });
+
+                    // Initialize DataTables
+                    $('#data-table').DataTable();
                 },
                 error: function (err) {
                     console.error('Error fetching or parsing data:', err);
                 }
             });
-
-            // Filter function
-            function filterMarkers() {
-                // Get selected categories from the filter form
-                var selectedCategories = [];
-                document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
-                    selectedCategories.push(input.value);
-                });
-
-                // Clear all markers
-                Object.keys(categoryMarkers).forEach(function (category) {
-                    categoryMarkers[category].forEach(function (marker) {
-                        map.removeLayer(marker);
-                    });
-                });
-
-                // Show only the selected category markers
-                selectedCategories.forEach(function (category) {
-                    if (categoryMarkers[category]) {
-                        categoryMarkers[category].forEach(function (marker) {
-                            marker.addTo(map);
-                        });
-                    }
-                });
-            }
-
-            // Add event listener to filter
-            document.getElementById('category-filter').addEventListener('change', filterMarkers);
         });
-        var tableRecords = $("#tableRecords").dataTable({
-					"bDeferRender": true,
-					"responsive": true,
-					"autoWidth": false,
-					"bDestroy": true,
-					"bFilter": false,
-					"pagingType": 'simple',
-					"fixedHeader": true,
-					dom: 'frBtpi',
-					buttons: [
-						'copy', 'excel', 'csv'
-					],
-					"columns": [
-						{ "data": "Supplier"},
-						{ "data": "Category"},
-						{ "data": "ContactNum"},
-						{ "data": "Website"},
-						{ "data": "Email"}
-					],
-					"columnDefs": [
-						{
-							"targets": 2,
-							"data": "website",
-							"render": function (data, type, row, meta) {
-							  return '<a href="'+data+'" target=_"blank">' + data + '</a>';
-							}
-						},
-						{
-							"targets": 3,
-							"data": "email",
-							"render": function (data, type, row, meta) {
-							  return '<a href="mailto:'+data+'">' + data + '</a>';
-							}
-						}
-					]
-					});
     </script>
 </body>
 </html>
