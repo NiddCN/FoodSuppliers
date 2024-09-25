@@ -12,48 +12,66 @@
     <title>Sheffield Region Food Providers</title>
     
     <style>
-        html, body, #map {
+        /* Make sure body and html take up full height */
+        html, body {
             width: 100%;
-            height: 89%; 
-            padding: 0;
+            height: 100%;
             margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
-        #table-container {
-            position: static;
-            top: 111%;
-            left: 100%;
+        
+        /* Container to hold both the map and table */
+        #main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Map should take the remaining space above the table */
+        #map {
+            flex: 1; /* Allow map to grow and fill available space */
             width: 100%;
         }
-        #data-table {
-            position: static;
-            top: 111%;
-            left: 100%;
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
-            font-family: 'Noto Sans', sans-serif;
-        }
-        #data-table th, #data-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }   
-        #data-table th {
-            background-color: #f2f2f2;
-        }
+        
+        /* Filter panel stays fixed on top of the map */
         #filter-panel {
             position: absolute;
-            top: 90px;
+            top: 10px;
             left: 10px;
             z-index: 1000;
             background-color: white;
-            padding: 2px;
-            margin: 0px;
+            padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             font-family: 'Noto Sans', sans-serif;
             font-size: 12px;
             width: 160px;
+        }
+        
+        /* Table container to appear below the map */
+        #table-container {
+            width: 100%;
+            max-height: 30%; /* You can adjust this if you want more or less space for the table */
+            overflow-y: auto;
+        }
+        
+        /* Table styling */
+        #data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Noto Sans', sans-serif;
+        }
+        
+        #data-table th, #data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        #data-table th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
