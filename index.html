@@ -202,7 +202,10 @@
                                 popupAnchor: [0, -32] 
                             });
 
-                            var marker = L.marker([lat, lng], { icon: customIcon , hygieneRating = row.Hygiene });
+                            var marker = L.marker([lat, lng], { 
+                                icon: customIcon, 
+                                hygieneRating: row.HygieneRating // Ensure this comes from your dataset
+                            });
                             var popupContent = [];
 
                             if (row.Public && row.Public !== 'N/A') {
