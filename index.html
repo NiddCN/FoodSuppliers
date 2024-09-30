@@ -202,7 +202,7 @@
                                 popupAnchor: [0, -32] 
                             });
 
-                            var marker = L.marker([lat, lng], { icon: customIcon });
+                            var marker = L.marker([lat, lng], { icon: customIcon , hygieneRating = row.Hygiene });
                             var popupContent = [];
 
                             if (row.Public && row.Public !== 'N/A') {
@@ -257,43 +257,52 @@
                 }
             });
            function filterMarkers() {
-            // Get selected categories from the category filter
-            var selectedCategories = [];
-            document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
-                selectedCategories.push(input.value);
-            });
-        
-            // Get selected hygiene ratings from the hygiene filter
-            var selectedHygieneRatings = [];
-            document.querySelectorAll('#hygiene-filter input:checked').forEach(function (input) {
-                selectedHygieneRatings.push(input.value);
-            });
-        
-            // Clear all markers
-            Object.keys(categoryMarkers).forEach(function (category) {
-                categoryMarkers[category].forEach(function (marker) {
-                    map.removeLayer(marker);
+                // Get selected categories from the category filter
+                var selectedCategories = [];
+                document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
+                    selectedCategories.push(input.value);
                 });
-            });
-        
-            // Show only the markers that match both selected categories and selected hygiene ratings
-            selectedCategories.forEach(function (category) {
-                if (categoryMarkers[category]) {
+            
+                // Get selected hygiene ratings from the hygiene filter
+                var selectedHygieneRatings = [];
+                document.querySelectorAll('#hygiene-filter input:checked').forEach(function (input) {
+                    selectedHygieneRatings.push(input.value);
+                });
+            
+                // If no categories are selected, show all categories (don't filter by category)
+                var allCategoriesSelected = selectedCategories.length === 0;
+            
+                // If no hygiene ratings are selected, show all hygiene levels (don't filter by hygiene)
+                var allHygieneRatingsSelected = selectedHygieneRatings.length === 0;
+            
+                // Clear all markers from the map
+                Object.keys(categoryMarkers).forEach(function (category) {
                     categoryMarkers[category].forEach(function (marker) {
-                        // Check if the marker's hygiene rating matches the selected hygiene filters
-                        var markerHygieneRating = marker.options.hygieneRating;
-        
-                        if (selectedHygieneRatings.includes(markerHygieneRating)) {
-                            marker.addTo(map);
-                        }
+                        map.removeLayer(marker);  // Remove all markers first
                     });
-                }
-            });
-        }
-        
-        // Add event listener to both filters
-        document.getElementById('category-filter').addEventListener('change', filterMarkers);
-        document.getElementById('hygiene-filter').addEventListener('change', filterMarkers);
+                });
+            
+                // Show markers that match both filters (category and hygiene)
+                Object.keys(categoryMarkers).forEach(function (category) {
+                    // Check if the category matches or if all categories are selected
+                    if (allCategoriesSelected || selectedCategories.includes(category)) {
+                        categoryMarkers[category].forEach(function (marker) {
+                            // Get the marker's hygiene rating (assuming marker has an associated hygiene rating)
+                            var markerHygieneRating = marker.options.hygieneRating;  // Ensure marker has this property
+            
+                            // Check if the hygiene rating matches or if all hygiene levels are selected
+                            if (allHygieneRatingsSelected || selectedHygieneRatings.includes(markerHygieneRating)) {
+                                // Add the marker back to the map if it matches both filters
+                                marker.addTo(map);
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // Add event listeners to both filters to trigger the filter function
+            document.getElementById('category-filter').addEventListener('change', filterMarkers);
+            document.getElementById('hygiene-filter').addEventListener('change', filterMarkers);
         });
     </script>
 </body>
