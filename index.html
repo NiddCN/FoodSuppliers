@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -63,7 +62,6 @@
             margin-top: 10px; /* Adds some space above the table */
         }
 
-
         /* Table styling */
         #data-table {
             width: 100%;
@@ -101,6 +99,21 @@
                 <label><input type="checkbox" value="Frozen foods" checked> Frozen foods</label><br>
                 <label><input type="checkbox" value="Catering Supplies" checked> Catering Supplies</label><br>
                 <label><input type="checkbox" value="Waste" checked> Waste</label>
+            </form>
+
+            <h3>Hygiene Rating</h3>
+            <form id="hygiene-filter">
+                <label><input type="checkbox" value="1"> 1</label><br>
+                <label><input type="checkbox" value="2"> 2</label><br>
+                <label><input type="checkbox" value="3"> 3</label><br>
+                <label><input type="checkbox" value="4"> 4</label><br>
+                <label><input type="checkbox" value="5"> 5</label><br>
+            </form>
+
+            <h3>Public</h3>
+            <form id="public-filter">
+                <label><input type="checkbox" value="Previous public sector provider"> Previous public sector provider</label><br>
+                <label><input type="checkbox" value="No noted public sector provision"> No noted public sector provision</label><br>
             </form>
         </div>
 
@@ -150,6 +163,7 @@
 
             // Object to store markers by category
             var categoryMarkers = {};
+            var allMarkers = []; // Store all markers for filtering
 
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
 
@@ -196,9 +210,13 @@
                             if (row.ContactNum && row.ContactNum !== 'N/A') {
                                 popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
                             }
+                            if (row.HygieneRating && row.HygieneRating !== 'N/A') {
+                                popupContent.push('<b>Hygiene Rating:</b> ' + row.HygieneRating);
+                            }
 
                             marker.bindPopup(popupContent.join('<br>'));
-                            
+                            allMarkers.push({ marker: marker, data: row }); // Store the marker and its data
+
                             if (!categoryMarkers[category]) {
                                 categoryMarkers[category] = [];
                             }
@@ -225,33 +243,49 @@
                     console.error('Error fetching or parsing data:', err);
                 }
             });
+
             // Filter function
             function filterMarkers() {
-                // Get selected categories from the filter form
+                // Get selected categories from the category filter form
                 var selectedCategories = [];
                 document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
                     selectedCategories.push(input.value);
                 });
 
-                // Clear all markers
-                Object.keys(categoryMarkers).forEach(function (category) {
-                    categoryMarkers[category].forEach(function (marker) {
-                        map.removeLayer(marker);
-                    });
+                // Get selected hygiene ratings from the hygiene filter form
+                var selectedHygieneRatings = [];
+                document.querySelectorAll('#hygiene-filter input:checked').forEach(function (input) {
+                    selectedHygieneRatings.push(input.value);
                 });
 
-                // Show only the selected category markers
-                selectedCategories.forEach(function (category) {
-                    if (categoryMarkers[category]) {
-                        categoryMarkers[category].forEach(function (marker) {
-                            marker.addTo(map);
-                        });
+                // Get selected public options from the public filter form
+                var selectedPublicOptions = [];
+                document.querySelectorAll('#public-filter input:checked').forEach(function (input) {
+                    selectedPublicOptions.push(input.value);
+                });
+
+                // Clear all markers
+                allMarkers.forEach(function (item) {
+                    map.removeLayer(item.marker);
+                });
+
+                // Show only the selected category, hygiene rating, and public options markers
+                allMarkers.forEach(function (item) {
+                    var row = item.data;
+                    var isCategoryMatch = selectedCategories.includes(row.Category);
+                    var isHygieneMatch = selectedHygieneRatings.length === 0 || selectedHygieneRatings.includes(row.HygieneRating);
+                    var isPublicMatch = selectedPublicOptions.length === 0 || selectedPublicOptions.includes(row.Public);
+
+                    if (isCategoryMatch && isHygieneMatch && isPublicMatch) {
+                        item.marker.addTo(map);
                     }
                 });
             }
 
-            // Add event listener to filter
+            // Add event listeners to filter
             document.getElementById('category-filter').addEventListener('change', filterMarkers);
+            document.getElementById('hygiene-filter').addEventListener('change', filterMarkers);
+            document.getElementById('public-filter').addEventListener('change', filterMarkers);
         });
     </script>
 </body>
