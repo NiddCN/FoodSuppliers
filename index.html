@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -73,7 +72,6 @@
             background-color: white; /* Optional: gives a background color to the table container */
             margin-top: 10px; /* Adds some space above the table */
         }
-
 
         /* Table styling */
         #data-table {
@@ -152,6 +150,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
     <script>
+        /* Initialize all markers array */
+        var allMarkers = []; 
+
         /* Add map centred on Sheffield */
         document.addEventListener('DOMContentLoaded', function () {
             var map = L.map('map').setView([53.3811, -1.4701], 10.2);
@@ -160,7 +161,7 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            /* Links to the symbols of the different categories - stored in the same Github repo*/
+            /* Links to the symbols of the different categories - stored in the same Github repo */
             var categoryIcons = {
                 "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',
                 "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg',
@@ -173,9 +174,6 @@
                 "Fresh fruit and veg": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/fruitveg.svg'
             };
 
-            /* Object to store markers by category */
-            var categoryMarkers = {};
-
             /* URL of the csv file - stored in the same Github repo */
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
 
@@ -185,111 +183,69 @@
                 header: true,
                 complete: function (results) {
                     var data = results.data;
-                    var tableBody = document.querySelector('#data-table tbody');
 
-                    data.forEach(function (row) {
-                        var lat = parseFloat(row.lat);
-                        var lng = parseFloat(row.long);
-
-                        if (!isNaN(lat) && !isNaN(lng)) {
-                            var category = row.Category || 'Default';
-                            var HygieneRating = row.Hygiene || 'Unknown';
-                            var iconUrl = categoryIcons[category] || 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/default.svg';
-
-                            var customIcon = L.icon({
+                    /* Generate a marker for each supplier */
+                    data.forEach(function (supplier) {
+                        if (supplier.Latitude && supplier.Longitude) {
+                            var iconUrl = categoryIcons[supplier.Category];
+                            var markerIcon = L.icon({
                                 iconUrl: iconUrl,
-                                iconSize: [32, 32], 
-                                iconAnchor: [16, 32], 
-                                popupAnchor: [0, -32] 
+                                iconSize: [32, 32]
                             });
 
-                            var marker = L.marker([lat, lng], { 
-                                icon: customIcon,
-                                category: category,
-                                hygieneRating: row.Hygiene // Ensure this comes from your dataset
-                            });
-                            var popupContent = [];
+                            var marker = L.marker([supplier.Latitude, supplier.Longitude], { icon: markerIcon })
+                                .bindPopup(`<b>${supplier.SupplierName}</b><br>Category: ${supplier.Category}<br>Website: <a href="${supplier.Website}" target="_blank">${supplier.Website}</a><br>Contact: ${supplier.ContactNumber}<br>Hygiene Rating: ${supplier.HygieneRating}`);
 
-                            if (row.Public && row.Public !== 'N/A') {
-                                popupContent.push(row.Public);
-                            }
-                            if (row.Supplier && row.Supplier !== 'N/A') {
-                                popupContent.push('<b>Supplier Name:</b> ' + row.Supplier);
-                            }
-                            if (row.Category && row.Category !== 'N/A') {
-                                popupContent.push('<b>Category:</b> ' + row.Category);
-                            }
-                            if (row.Website && row.Website !== 'N/A') {
-                                popupContent.push('<b>Website:</b> <a href="' + row.Website + '" target="_blank">' + row.Website + '</a>');
-                            }
-                            if (row.Email && row.Email !== 'N/A') {
-                                popupContent.push('<b>Email:</b> <a href="mailto:' + row.Email + '">' + row.Email + '</a>');
-                            }
-                            if (row.ContactNum && row.ContactNum !== 'N/A') {
-                                popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
-                            }
-                            if (row.Hygiene && row.Hygiene !== 'N/A') {
-                                popupContent.push('<b>Hygiene Rating:</b> ' + row.Hygiene);
-                            }
+                            marker.addTo(map); 
+                            allMarkers.push({ marker, supplier });
 
-                            marker.bindPopup(popupContent.join('<br>'));
-                            
-                            allMarkers.push(marker);
-                            marker.addTo(map);
-                            
-                            // Add a row to the table
-                            var tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${row.Supplier || 'N/A'}</td>
-                                <td>${row.Category || 'N/A'}</td>
-                                <td>${row.Website ? '<a href="' + row.Website + '" target="_blank">' + row.Website + '</a>' : 'N/A'}</td>
-                                <td>${row.Email ? '<a href="mailto:' + row.Email + '">' + row.Email + '</a>' : 'N/A'}</td>
-                                <td>${row.ContactNum || 'N/A'}</td>
-                                <td>${row.Hygiene || 'N/A'}</td>
-                            `;
-                            tableBody.appendChild(tr);
+                            /* Adding row to the data table */
+                            $('#data-table').DataTable().row.add([
+                                supplier.SupplierName,
+                                supplier.Category,
+                                supplier.Website,
+                                supplier.Email,
+                                supplier.ContactNumber,
+                                supplier.HygieneRating
+                            ]).draw();
                         }
                     });
 
-                    // Initialize DataTables
-                    $('#data-table').DataTable();
-                },
-                error: function (err) {
-                    console.error('Error fetching or parsing data:', err);
+                    /* Filter functionality */
+                    function filterMarkers() {
+                        var selectedCategories = [];
+                        var selectedHygiene = [];
+
+                        /* Get selected categories */
+                        $('#category-filter input[type="checkbox"]:checked').each(function () {
+                            selectedCategories.push(this.value);
+                        });
+
+                        /* Get selected hygiene ratings */
+                        $('#hygiene-filter input[type="checkbox"]:checked').each(function () {
+                            selectedHygiene.push(this.value);
+                        });
+
+                        /* Remove all markers from the map */
+                        allMarkers.forEach(function (item) {
+                            map.removeLayer(item.marker);
+                        });
+
+                        /* Add markers based on selected filters */
+                        allMarkers.forEach(function (item) {
+                            var categoryMatch = selectedCategories.includes(item.supplier.Category);
+                            var hygieneMatch = selectedHygiene.includes(item.supplier.HygieneRating);
+
+                            if (categoryMatch && hygieneMatch) {
+                                item.marker.addTo(map);
+                            }
+                        });
+                    }
+
+                    /* Event listener for checkbox changes */
+                    $('#category-filter input[type="checkbox"], #hygiene-filter input[type="checkbox"]').on('change', filterMarkers);
                 }
             });
-           function filterMarkers() {
-            // Get selected categories from the category filter
-            var selectedCategories = [];
-            document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
-                selectedCategories.push(input.value);
-            });
-        
-            // Get selected hygiene ratings from the hygiene filter
-            var selectedHygieneRatings = [];
-            document.querySelectorAll('#hygiene-filter input:checked').forEach(function (input) {
-                selectedHygieneRatings.push(input.value);
-            });
-        
-            // Clear all markers from the map
-            allMarkers.forEach(function (marker) {
-                map.removeLayer(marker);  // Remove all markers first
-            });
-        
-            // Show only the markers that match both filters (category and hygiene)
-            allMarkers.forEach(function (marker) {
-                var matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(marker.options.category);
-                var matchesHygiene = selectedHygieneRatings.length === 0 || selectedHygieneRatings.includes(marker.options.hygieneRating);
-        
-                if (matchesCategory && matchesHygiene) {
-                    marker.addTo(map);  // Only add marker if it matches both filters
-                }
-            });
-        }
-        
-        // Event listeners for both filter sets
-        document.getElementById('category-filter').addEventListener('change', filterMarkers);
-        document.getElementById('hygiene-filter').addEventListener('change', filterMarkers);
         });
     </script>
 </body>
