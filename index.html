@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,19 +22,19 @@
             flex-direction: column;
         }
 
-        <!-- Main container holding map and table -->
+        /* Main container holding map and table */
         #main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
-        <!-- Map body -->
+        /* Map body */
         #map {
             flex: 1;
             width: 100%;
         }
 
-        <!-- Category filter panel -->
+        /* Category filter panel*/
         #cat-filter-panel {
             position: absolute;
             top: 90px;
@@ -47,7 +48,7 @@
             font-size: 12px;
             width: 160px;
         }
-        <!-- Hygiene filter panel -->
+        /* Hygiene filter panel */
         #hyg-filter-panel {
             position: absolute;
             top: 310px;
@@ -56,12 +57,12 @@
             background-color: white;
             padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             font-family: 'Noto Sans', sans-serif;
             font-size: 12px;
             width: 80px;
         }
-        <!-- Table container at the bottom of the page -->
+        /* Table container at the bottom of the page */
         #table-container {
             width: 100%;
             max-height: 30%; /* Adjust the table height as needed */
@@ -74,7 +75,7 @@
         }
 
 
-        <!-- Table styling -->
+        /* Table styling */
         #data-table {
             width: 100%;
             border-collapse: collapse;
@@ -113,7 +114,7 @@
                 <label><input type="checkbox" value="Drink" checked> Drink</label>
             </form>
         </div>
-        <!-- Hygiene filter boxes -->
+        /* Hygiene filter boxes */
         <div id="hyg-filter-panel">
             <h3>Hygiene</h3>
             <form id="hygiene-filter">
@@ -125,7 +126,7 @@
             </form>
         </div>
         
-        <!--Table container below the map -->
+        /* Table container below the map */
         <div id="table-container">
             <table id="data-table" class="display">
                 <thead>
@@ -144,14 +145,14 @@
         </div>
     </div>
 
-    <!-- Leaflet, jQuery, DataTables, PapaParse libraries --> 
+    /* Leaflet, jQuery, DataTables, PapaParse libraries  */
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
     <script>
-        <!-- Add map centred on Sheffield -->
+        /* Add map centred on Sheffield */
         document.addEventListener('DOMContentLoaded', function () {
             var map = L.map('map').setView([53.3811, -1.4701], 10.2);
 
@@ -159,7 +160,7 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            <!-- Links to the symbols of the different categories - stored in the same Github repo -->
+            /* Links to the symbols of the different categories - stored in the same Github repo*/
             var categoryIcons = {
                 "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',
                 "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg',
@@ -172,13 +173,13 @@
                 "Fresh fruit and veg": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/fruitveg.svg'
             };
 
-            <!-- Object to store markers by category -->
+            /* Object to store markers by category */
             var categoryMarkers = {};
 
-            <!-- URL of the csv file - stored in the same Github repo -->
+            /* URL of the csv file - stored in the same Github repo */
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
 
-            <!-- Parsing each line of the csv to add to map and filter boxes --> 
+            /* Parsing each line of the csv to add to map and filter boxes */
             Papa.parse(csvUrl, {
                 download: true,
                 header: true,
