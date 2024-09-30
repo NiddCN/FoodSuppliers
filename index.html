@@ -144,13 +144,13 @@
     </div>
 
     <!-- Leaflet, jQuery, DataTables, PapaParse libraries  -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
     <script>
-        var allMarkers = []; // Store all markers
+        var allMarkers = []; // Store all markers and their data
 
         document.addEventListener('DOMContentLoaded', function () {
             var map = L.map('map').setView([53.3811, -1.4701], 10.2);
@@ -179,68 +179,81 @@
                 complete: function (results) {
                     var data = results.data;
 
-                    console.log("CSV Data Loaded:", data); // Check if data is loaded
+                    console.log("CSV Data Loaded:", data); // Confirm data load
 
-                    data.forEach(function (supplier) {
-                        if (supplier.Latitude && supplier.Longitude) {
-                            console.log("Creating marker for:", supplier.SupplierName); // Log marker creation
+                    data.forEach(function (row) {
+                        // Use 'lat' and 'long' based on your CSV file structure
+                        if (row.lat && row.long) {
+                            console.log("Creating marker for:", row.Supplier); // Log marker creation
 
-                            var iconUrl = categoryIcons[supplier.Category];
+                            var iconUrl = categoryIcons[row.Category];
                             var markerIcon = L.icon({
                                 iconUrl: iconUrl,
                                 iconSize: [32, 32]
                             });
 
-                            var marker = L.marker([supplier.Latitude, supplier.Longitude], { icon: markerIcon })
-                                .bindPopup(`<b>${supplier.SupplierName}</b><br>Category: ${supplier.Category}<br>Website: <a href="${supplier.Website}" target="_blank">${supplier.Website}</a><br>Contact: ${supplier.ContactNumber}<br>Hygiene Rating: ${supplier.HygieneRating}`);
+                            var marker = L.marker([row.lat, row.long], { 
+                                icon: markerIcon, 
+                                category: row.Category,
+                                hygieneRating: row.HygieneRating 
+                            }).bindPopup(`
+                                <b>${row.Supplier}</b><br>
+                                Category: ${row.Category}<br>
+                                Website: <a href="${row.Website}" target="_blank">${row.Website}</a><br>
+                                Contact: ${row.ContactNum}<br>
+                                Hygiene Rating: ${row.HygieneRating}
+                            `);
 
-                            marker.addTo(map); // Add marker to map initially
-                            allMarkers.push({ marker, supplier });
+                            marker.addTo(map); // Add marker to the map initially
+                            
+                            // Store marker with its relevant category and hygiene rating for future filtering
+                            allMarkers.push({
+                                marker: marker,
+                                category: row.Category,
+                                hygieneRating: row.HygieneRating
+                            });
 
                             // Add row to the data table
                             $('#data-table').DataTable().row.add([
-                                supplier.SupplierName,
-                                supplier.Category,
-                                supplier.Website,
-                                supplier.Email,
-                                supplier.ContactNumber,
-                                supplier.HygieneRating
+                                row.Supplier,
+                                row.Category,
+                                row.Website,
+                                row.Email,
+                                row.ContactNum,
+                                row.HygieneRating
                             ]).draw();
-                        } else {
-                            console.log("Missing coordinates for supplier:", supplier.SupplierName); // Log missing coordinates
                         }
                     });
 
                     function filterMarkers() {
                         var selectedCategories = [];
-                        var selectedHygiene = [];
+                        var selectedHygieneRatings = [];
 
-                        $('#category-filter input[type="checkbox"]:checked').each(function () {
+                        // Get checked categories and hygiene ratings
+                        $('#category-filter input:checked').each(function () {
                             selectedCategories.push(this.value);
                         });
 
-                        $('#hygiene-filter input[type="checkbox"]:checked').each(function () {
-                            selectedHygiene.push(this.value);
+                        $('#hygiene-filter input:checked').each(function () {
+                            selectedHygieneRatings.push(this.value);
                         });
 
+                        // Loop through all markers and set their visibility based on the filters
                         allMarkers.forEach(function (item) {
-                            map.removeLayer(item.marker); // Remove all markers initially
-                        });
+                            var matchesCategory = selectedCategories.includes(item.category);
+                            var matchesHygiene = selectedHygieneRatings.includes(item.hygieneRating);
 
-                        allMarkers.forEach(function (item) {
-                            var categoryMatch = selectedCategories.includes(item.supplier.Category);
-                            var hygieneMatch = selectedHygiene.includes(item.supplier.HygieneRating);
-
-                            if (categoryMatch && hygieneMatch) {
-                                item.marker.addTo(map); // Add marker if it matches filters
-                                console.log("Displaying marker for:", item.supplier.SupplierName); // Log displayed marker
+                            if (matchesCategory && matchesHygiene) {
+                                item.marker.addTo(map); // Show marker if it matches both filters
                             } else {
-                                console.log("Marker hidden for:", item.supplier.SupplierName); // Log hidden marker
+                                map.removeLayer(item.marker); // Hide marker if it doesn't match
                             }
                         });
                     }
 
-                    $('#category-filter input[type="checkbox"], #hygiene-filter input[type="checkbox"]').on('change', filterMarkers);
+                    // Add event listeners for both category and hygiene filters
+                    $('#category-filter input').on('change', filterMarkers);
+                    $('#hygiene-filter input').on('change', filterMarkers);
                 }
             });
         });
