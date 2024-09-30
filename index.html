@@ -150,10 +150,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
     <script>
-        /* Initialize all markers array */
-        var allMarkers = []; 
+        var allMarkers = []; // Store all markers
 
-        /* Add map centred on Sheffield */
         document.addEventListener('DOMContentLoaded', function () {
             var map = L.map('map').setView([53.3811, -1.4701], 10.2);
 
@@ -161,7 +159,6 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            /* Links to the symbols of the different categories - stored in the same Github repo */
             var categoryIcons = {
                 "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',
                 "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg',
@@ -174,19 +171,20 @@
                 "Fresh fruit and veg": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/fruitveg.svg'
             };
 
-            /* URL of the csv file - stored in the same Github repo */
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
 
-            /* Parsing each line of the csv to add to map and filter boxes */
             Papa.parse(csvUrl, {
                 download: true,
                 header: true,
                 complete: function (results) {
                     var data = results.data;
 
-                    /* Generate a marker for each supplier */
+                    console.log("CSV Data Loaded:", data); // Check if data is loaded
+
                     data.forEach(function (supplier) {
                         if (supplier.Latitude && supplier.Longitude) {
+                            console.log("Creating marker for:", supplier.SupplierName); // Log marker creation
+
                             var iconUrl = categoryIcons[supplier.Category];
                             var markerIcon = L.icon({
                                 iconUrl: iconUrl,
@@ -196,10 +194,10 @@
                             var marker = L.marker([supplier.Latitude, supplier.Longitude], { icon: markerIcon })
                                 .bindPopup(`<b>${supplier.SupplierName}</b><br>Category: ${supplier.Category}<br>Website: <a href="${supplier.Website}" target="_blank">${supplier.Website}</a><br>Contact: ${supplier.ContactNumber}<br>Hygiene Rating: ${supplier.HygieneRating}`);
 
-                            marker.addTo(map); 
+                            marker.addTo(map); // Add marker to map initially
                             allMarkers.push({ marker, supplier });
 
-                            /* Adding row to the data table */
+                            // Add row to the data table
                             $('#data-table').DataTable().row.add([
                                 supplier.SupplierName,
                                 supplier.Category,
@@ -208,41 +206,40 @@
                                 supplier.ContactNumber,
                                 supplier.HygieneRating
                             ]).draw();
+                        } else {
+                            console.log("Missing coordinates for supplier:", supplier.SupplierName); // Log missing coordinates
                         }
                     });
 
-                    /* Filter functionality */
                     function filterMarkers() {
                         var selectedCategories = [];
                         var selectedHygiene = [];
 
-                        /* Get selected categories */
                         $('#category-filter input[type="checkbox"]:checked').each(function () {
                             selectedCategories.push(this.value);
                         });
 
-                        /* Get selected hygiene ratings */
                         $('#hygiene-filter input[type="checkbox"]:checked').each(function () {
                             selectedHygiene.push(this.value);
                         });
 
-                        /* Remove all markers from the map */
                         allMarkers.forEach(function (item) {
-                            map.removeLayer(item.marker);
+                            map.removeLayer(item.marker); // Remove all markers initially
                         });
 
-                        /* Add markers based on selected filters */
                         allMarkers.forEach(function (item) {
                             var categoryMatch = selectedCategories.includes(item.supplier.Category);
                             var hygieneMatch = selectedHygiene.includes(item.supplier.HygieneRating);
 
                             if (categoryMatch && hygieneMatch) {
-                                item.marker.addTo(map);
+                                item.marker.addTo(map); // Add marker if it matches filters
+                                console.log("Displaying marker for:", item.supplier.SupplierName); // Log displayed marker
+                            } else {
+                                console.log("Marker hidden for:", item.supplier.SupplierName); // Log hidden marker
                             }
                         });
                     }
 
-                    /* Event listener for checkbox changes */
                     $('#category-filter input[type="checkbox"], #hygiene-filter input[type="checkbox"]').on('change', filterMarkers);
                 }
             });
