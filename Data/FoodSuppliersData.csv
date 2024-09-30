@@ -1,4 +1,4 @@
-Category,Supplier,postcode ,ContactNum,Website,Email,Public,Hygiene,lat,long
+Category,Supplier,postcode ,ContactNum,Website,Email,Public,HygieneRating,lat,long
 Bakery,Roses,S4 7QQ,0114 243 4160,https://roses-the-bakers.com/contact/,info@roses-the-bakers.com,Previous Public Sector Provider,5,53.398186,-1.443225
 Catering Supplies,Planglow Ltd,BS1 3AE,0117 317 8600,https://planglow.com/,info@planglow.com,Previous Public Sector Provider,5,51.456218,-2.583334
 Catering Supplies,Catering 24,DE7 8FU,0115 944 4434,https://www.catering24.co.uk/,hello@catering24.co.uk,Previous Public Sector Provider,5,52.978973,-1.31835
@@ -56,10 +56,8 @@ Drink,Frazer's Coffee,S3 8DD,07885 445315,https://www.frazerscoffeeroasters.co.u
 Dairy and milk products,Fine Cheeses (Michael Lee),WF7 6FE,01977 703061,https://www.finecheesesltd.co.uk/,info@finecheesesltd.co.uk,Previous Public Sector Provider,4,53.68034,-1.370173
 Catering Supplies,First Choice Catering Spares Ltd,WS11 8LD,01543 577 778,https://www.partstown.co.uk/,,Previous Public Sector Provider,4,52.671246,-2.002997
 Ready to eat meals,Fresh Food for Now Company,Pl17 7XG,0116 236 1640,https://www.foodfornow.co.uk/contact-us/,hello@foodfornow.co.uk,Previous Public Sector Provider,4,50.497471,-4.316681
-,,,,,,Previous Public Sector Provider,4,,
 Dairy and milk products,Freshways,M12 6LL,0208 746 2046,https://www.freshways.co.uk/contact/,info@freshways.co.uk,Previous Public Sector Provider,4,53.474869,-2.210766
 Protein,Hebdige Butchers,S9 1GB,0114 272 2915,https://www.hebdigebutchers.co.uk/,,Previous Public Sector Provider,4,53.417301,-1.417999
-,,,,,,Previous Public Sector Provider,4,,
 Ready to eat meals,Hedgerow Preserving Company,S7 2BQ,07966 501 975,https://hedgerowpreserves.com/contact,simon@hedgerowpreserves.com,Previous Public Sector Provider,4,53.35461,-1.487903
 ,Hodmedods,NR34 8DQ,01986 467567,https://hodmedods.co.uk/,hello@hodmedods.co.uk,Previous Public Sector Provider,4,52.390656,1.577459
 Frozen foods,Holdsworth Food Service,S44 5FB,01298 871435,https://www.holdsworthfoods.co.uk/,info@holdsworth-foods.co.uk,Previous Public Sector Provider,4,53.237015,-1.331043
