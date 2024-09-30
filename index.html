@@ -38,16 +38,16 @@
         /* Filter panel stays positioned over the map */
         #filter-panel {
             position: absolute;
-            top: 10px;
-            right: 1%;
+            top: 90px;
+            left: 10px;
             z-index: 1000;
             background-color: white;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             font-family: 'Noto Sans', sans-serif;
-            font-size: 10px;
-            width: 140px;
+            font-size: 12px;
+            width: 160px;
         }
 
         /* Table container at the bottom of the page */
@@ -110,9 +110,9 @@
                 <label><input type="checkbox" value="5" checked> 5</label><br>
             </form>
 
-            <h3>Previous Public Sector Provider</h3>
+            <h3>Public</h3>
             <form id="public-filter">
-                <label><input type="checkbox" value="Previous public sector provider"> Previous Public Sector Provider</label><br>
+                <label><input type="checkbox" id="public-checkbox" value="Previous public sector provider"> Previous public sector provider</label><br>
             </form>
         </div>
 
@@ -195,96 +195,76 @@
                                 popupContent.push(row.Public);
                             }
                             if (row.Supplier && row.Supplier !== 'N/A') {
-                                popupContent.push('<b>Supplier Name:</b> ' + row.Supplier);
+                                popupContent.push(row.Supplier);
                             }
                             if (row.Category && row.Category !== 'N/A') {
-                                popupContent.push('<b>Category:</b> ' + row.Category);
+                                popupContent.push(row.Category);
                             }
                             if (row.Website && row.Website !== 'N/A') {
-                                popupContent.push('<b>Website:</b> <a href="' + row.Website + '" target="_blank">' + row.Website + '</a>');
+                                popupContent.push('<a href="' + row.Website + '" target="_blank">Website</a>');
                             }
                             if (row.Email && row.Email !== 'N/A') {
-                                popupContent.push('<b>Email:</b> <a href="mailto:' + row.Email + '">' + row.Email + '</a>');
+                                popupContent.push('<a href="mailto:' + row.Email + '">' + row.Email + '</a>');
                             }
-                            if (row.ContactNum && row.ContactNum !== 'N/A') {
-                                popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
-                            }
-                            if (row.HygieneRating && row.HygieneRating !== 'N/A') {
-                                popupContent.push('<b>Hygiene Rating:</b> ' + row.HygieneRating);
+                            if (row.Contact && row.Contact !== 'N/A') {
+                                popupContent.push(row.Contact);
                             }
 
                             marker.bindPopup(popupContent.join('<br>'));
-                            allMarkers.push({ marker: marker, data: row }); // Store the marker and its data
+                            allMarkers.push({ marker: marker, row: row }); // Store the marker and its associated data
+                            marker.addTo(map); // Add marker to the map
 
+                            // Initialize category markers
                             if (!categoryMarkers[category]) {
                                 categoryMarkers[category] = [];
                             }
                             categoryMarkers[category].push(marker);
-                            marker.addTo(map);
-                            
-                            // Add a row to the table
-                            var tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${row.Supplier || 'N/A'}</td>
-                                <td>${row.Category || 'N/A'}</td>
-                                <td>${row.Website ? '<a href="' + row.Website + '" target="_blank">' + row.Website + '</a>' : 'N/A'}</td>
-                                <td>${row.Email ? '<a href="mailto:' + row.Email + '">' + row.Email + '</a>' : 'N/A'}</td>
-                                <td>${row.ContactNum || 'N/A'}</td>
-                            `;
-                            tableBody.appendChild(tr);
+
+                            // Add row to the table
+                            var newRow = tableBody.insertRow();
+                            newRow.insertCell(0).textContent = row.Supplier;
+                            newRow.insertCell(1).textContent = row.Category;
+                            newRow.insertCell(2).textContent = row.Website;
+                            newRow.insertCell(3).textContent = row.Email;
+                            newRow.insertCell(4).textContent = row.Contact;
                         }
                     });
 
-                    // Initialize DataTables
+                    // Initialize DataTable
                     $('#data-table').DataTable();
-                },
-                error: function (err) {
-                    console.error('Error fetching or parsing data:', err);
+
+                    // Add filter functionality
+                    addFilters();
                 }
             });
 
-            // Filter function
-            function filterMarkers() {
-                // Get selected categories from the category filter form
-                var selectedCategories = [];
-                document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
-                    selectedCategories.push(input.value);
-                });
+            function addFilters() {
+                // Filter function
+                function filterMarkers() {
+                    const selectedCategories = Array.from(document.querySelectorAll('#category-filter input:checked')).map(input => input.value);
+                    const selectedHygieneRatings = Array.from(document.querySelectorAll('#hygiene-filter input:checked')).map(input => input.value);
+                    const isPublicChecked = document.getElementById('public-checkbox').checked;
 
-                // Get selected hygiene ratings from the hygiene filter form
-                var selectedHygieneRatings = [];
-                document.querySelectorAll('#hygiene-filter input:checked').forEach(function (input) {
-                    selectedHygieneRatings.push(input.value);
-                });
+                    // Clear all markers from the map
+                    allMarkers.forEach(({ marker }) => marker.remove());
 
-                // Get selected public options from the public filter form
-                var selectedPublicOptions = [];
-                document.querySelectorAll('#public-filter input:checked').forEach(function (input) {
-                    selectedPublicOptions.push(input.value);
-                });
+                    // Filter and show markers based on selected filters
+                    allMarkers.forEach(({ marker, row }) => {
+                        const showCategory = selectedCategories.includes(row.Category);
+                        const showHygiene = selectedHygieneRatings.includes(row.HygieneRating);
+                        const showPublic = !isPublicChecked || (isPublicChecked && row.Public === 'Previous public sector provider');
 
-                // Clear all markers
-                allMarkers.forEach(function (item) {
-                    map.removeLayer(item.marker);
-                });
+                        if (showCategory && showHygiene && showPublic) {
+                            marker.addTo(map);
+                        }
+                    });
+                }
 
-                // Show only the selected category, hygiene rating, and public options markers
-                allMarkers.forEach(function (item) {
-                    var row = item.data;
-                    var isCategoryMatch = selectedCategories.includes(row.Category);
-                    var isHygieneMatch = selectedHygieneRatings.length === 0 || selectedHygieneRatings.includes(row.HygieneRating);
-                    var isPublicMatch = selectedPublicOptions.length === 0 || selectedPublicOptions.includes(row.Public);
-
-                    if (isCategoryMatch && isHygieneMatch && isPublicMatch) {
-                        item.marker.addTo(map);
-                    }
+                // Attach change event listeners to checkboxes
+                document.querySelectorAll('#category-filter input, #hygiene-filter input, #public-filter input').forEach(input => {
+                    input.addEventListener('change', filterMarkers);
                 });
             }
-
-            // Add event listeners to filter
-            document.getElementById('category-filter').addEventListener('change', filterMarkers);
-            document.getElementById('hygiene-filter').addEventListener('change', filterMarkers);
-            document.getElementById('public-filter').addEventListener('change', filterMarkers);
         });
     </script>
 </body>
