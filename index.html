@@ -12,7 +12,6 @@
     <title>Sheffield Region Food Providers</title>
     
     <style>
-        /* Full height for body and html */
         html, body {
             width: 100%;
             height: 100%;
@@ -28,15 +27,14 @@
             display: flex;
             flex-direction: column;
         }
-
-        /* Map should take the remaining available space */
+        /* Map body */
         #map {
             flex: 1;
             width: 100%;
         }
 
-        /* Filter panel stays positioned over the map */
-        #filter-panel {
+        /* Category filter panel*/
+        #cat-filter-panel {
             position: absolute;
             top: 90px;
             left: 10px;
@@ -49,7 +47,20 @@
             font-size: 12px;
             width: 160px;
         }
-
+        /* Hygiene filter panel */
+        #hyg-filter-panel {
+            position: absolute;
+            top: 290px;
+            left: 10px;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            font-family: 'Noto Sans', sans-serif;
+            font-size: 12px;
+            width: 160px;
+        }
         /* Table container at the bottom of the page */
         #table-container {
             width: 100%;
@@ -87,8 +98,7 @@
         <!-- Map container -->
         <div id="map"></div>
 
-        <!-- Filter panel stays on top of the map -->
-        <div id="filter-panel">
+        <div id="cat-filter-panel">
             <h3>Category</h3>
             <form id="category-filter">
                 <label><input type="checkbox" value="Fresh fruit and veg" checked> Fresh fruit and veg</label><br>
@@ -100,10 +110,22 @@
                 <label><input type="checkbox" value="Frozen foods" checked> Frozen foods</label><br>
                 <label><input type="checkbox" value="Catering Supplies" checked> Catering Supplies</label><br>
                 <label><input type="checkbox" value="Waste" checked> Waste</label>
+                <label><input type="checkbox" value="Drink" checked> Drink</label>
             </form>
         </div>
-
-        <!-- Table container below the map -->
+        /* Hygiene filter boxes */
+        <div id="hyg-filter-panel">
+            <h3>Hygiene</h3>
+            <form id="hygiene-filter">
+                <label><input type="checkbox" value="5" checked> 5</label><br>
+                <label><input type="checkbox" value="4" checked> 4</label><br>
+                <label><input type="checkbox" value="3" checked> 3</label><br>
+                <label><input type="checkbox" value="2" checked> 2</label><br>
+                <label><input type="checkbox" value="1" checked> 1</label><br>
+            </form>
+        </div>
+        
+        /* Table container below the map */
         <div id="table-container">
             <table id="data-table" class="display">
                 <thead>
@@ -113,6 +135,7 @@
                         <th>Website</th>
                         <th>Email</th>
                         <th>Contact Number</th>
+                        <th>Hygiene Rating</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -121,13 +144,14 @@
         </div>
     </div>
 
-    <!-- JavaScript: Leaflet, jQuery, DataTables, PapaParse -->
+    /* Leaflet, jQuery, DataTables, PapaParse libraries  */
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
     <script>
+        /* Add map centred on Sheffield */
         document.addEventListener('DOMContentLoaded', function () {
             var map = L.map('map').setView([53.3811, -1.4701], 10.2);
 
@@ -135,6 +159,7 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
+            /* Links to the symbols of the different categories - stored in the same Github repo*/
             var categoryIcons = {
                 "Ready to eat meals": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/readymeal.svg',
                 "Specialist diet supplies": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/Halal.svg',
@@ -147,11 +172,13 @@
                 "Fresh fruit and veg": 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Symbols/fruitveg.svg'
             };
 
-            // Object to store markers by category
+            /* Object to store markers by category */
             var categoryMarkers = {};
 
+            /* URL of the csv file - stored in the same Github repo */
             var csvUrl = 'https://raw.githubusercontent.com/NiddCN/FoodSuppliers/main/Data/FoodSuppliersData.csv';
 
+            /* Parsing each line of the csv to add to map and filter boxes */
             Papa.parse(csvUrl, {
                 download: true,
                 header: true,
@@ -195,6 +222,9 @@
                             if (row.ContactNum && row.ContactNum !== 'N/A') {
                                 popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
                             }
+                            if (row.Hygiene && row.Hygiene !== 'N/A') {
+                                popupContent.push('<b>Hygiene Rating:</b> ' + row.Hygiene);
+                            }
 
                             marker.bindPopup(popupContent.join('<br>'));
                             
@@ -212,6 +242,7 @@
                                 <td>${row.Website ? '<a href="' + row.Website + '" target="_blank">' + row.Website + '</a>' : 'N/A'}</td>
                                 <td>${row.Email ? '<a href="mailto:' + row.Email + '">' + row.Email + '</a>' : 'N/A'}</td>
                                 <td>${row.ContactNum || 'N/A'}</td>
+                                <td>${row.Hygiene || 'N/A'}</td>
                             `;
                             tableBody.appendChild(tr);
                         }
@@ -224,33 +255,44 @@
                     console.error('Error fetching or parsing data:', err);
                 }
             });
-            // Filter function
-            function filterMarkers() {
-                // Get selected categories from the filter form
-                var selectedCategories = [];
-                document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
-                    selectedCategories.push(input.value);
+           function filterMarkers() {
+            // Get selected categories from the category filter
+            var selectedCategories = [];
+            document.querySelectorAll('#category-filter input:checked').forEach(function (input) {
+                selectedCategories.push(input.value);
+            });
+        
+            // Get selected hygiene ratings from the hygiene filter
+            var selectedHygieneRatings = [];
+            document.querySelectorAll('#hygiene-filter input:checked').forEach(function (input) {
+                selectedHygieneRatings.push(input.value);
+            });
+        
+            // Clear all markers
+            Object.keys(categoryMarkers).forEach(function (category) {
+                categoryMarkers[category].forEach(function (marker) {
+                    map.removeLayer(marker);
                 });
-
-                // Clear all markers
-                Object.keys(categoryMarkers).forEach(function (category) {
+            });
+        
+            // Show only the markers that match both selected categories and selected hygiene ratings
+            selectedCategories.forEach(function (category) {
+                if (categoryMarkers[category]) {
                     categoryMarkers[category].forEach(function (marker) {
-                        map.removeLayer(marker);
-                    });
-                });
-
-                // Show only the selected category markers
-                selectedCategories.forEach(function (category) {
-                    if (categoryMarkers[category]) {
-                        categoryMarkers[category].forEach(function (marker) {
+                        // Check if the marker's hygiene rating matches the selected hygiene filters
+                        var markerHygieneRating = marker.options.hygieneRating;
+        
+                        if (selectedHygieneRatings.includes(markerHygieneRating)) {
                             marker.addTo(map);
-                        });
-                    }
-                });
-            }
-
-            // Add event listener to filter
-            document.getElementById('category-filter').addEventListener('change', filterMarkers);
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Add event listener to both filters
+        document.getElementById('category-filter').addEventListener('change', filterMarkers);
+        document.getElementById('hygiene-filter').addEventListener('change', filterMarkers);
         });
     </script>
 </body>
