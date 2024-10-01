@@ -233,7 +233,12 @@
                     });
 
                     // Initialize DataTable
-                    $('#data-table').DataTable();
+                    $('#data-table').DataTable({
+                        "lengthMenu": false, 
+                        "paging": true,       
+                        "info": true,        
+                        "searching": true
+                    });
 
                     // Add filter functionality
                     addFilters();
