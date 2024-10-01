@@ -183,17 +183,13 @@
 
                             var customIcon = L.icon({
                                 iconUrl: iconUrl,
-                                iconSize: [32, 32], 
-                                iconAnchor: [16, 32], 
-                                popupAnchor: [0, -32] 
+                                iconSize: [38, 38], // Adjust icon size as needed
                             });
 
                             var marker = L.marker([lat, lng], { icon: customIcon });
+
                             var popupContent = [];
 
-                            if (row.Public && row.Public !== 'N/A') {
-                                popupContent.push(row.Public);
-                            }
                             if (row.Supplier && row.Supplier !== 'N/A') {
                                 popupContent.push(row.Supplier);
                             }
@@ -252,7 +248,9 @@
                     allMarkers.forEach(({ marker, row }) => {
                         const showCategory = selectedCategories.includes(row.Category);
                         const showHygiene = selectedHygieneRatings.includes(row.HygieneRating);
-                        const showPublic = !isPublicChecked || (isPublicChecked && row.Public === 'Previous public sector provider');
+
+                        // If the checkbox is unchecked, show both 'Previous' and 'None' values
+                        const showPublic = !isPublicChecked || (isPublicChecked && row.Public === 'Previous');
 
                         if (showCategory && showHygiene && showPublic) {
                             marker.addTo(map);
