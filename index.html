@@ -39,7 +39,7 @@
         #filter-panel {
             position: absolute;
             top: 8px;
-            right: 2%;
+            right: 0.2%;
             z-index: 1000;
             background-color: white;
             padding: 10px;
@@ -98,7 +98,8 @@
                 <label><input type="checkbox" value="Specialist diet supplies" checked> Specialist diet supplies</label><br>
                 <label><input type="checkbox" value="Frozen foods" checked> Frozen foods</label><br>
                 <label><input type="checkbox" value="Catering Supplies" checked> Catering Supplies</label><br>
-                <label><input type="checkbox" value="Waste" checked> Waste</label>
+                <label><input type="checkbox" value="Waste" checked> Waste</label><br>
+                <label><input type="checkbox" value="Drink" checked> Drink</label>
             </form>
 
             <h3>Hygiene Rating</h3>
@@ -191,19 +192,22 @@
                             var popupContent = [];
 
                             if (row.Supplier && row.Supplier !== 'N/A') {
-                                popupContent.push(row.Supplier);
+                                popupContent.push('<b>Supplier Name:</b> ' + row.Supplier);
                             }
                             if (row.Category && row.Category !== 'N/A') {
-                                popupContent.push(row.Category);
+                                popupContent.push('<b>Category:</b> ' + row.Category);
                             }
                             if (row.Website && row.Website !== 'N/A') {
-                                popupContent.push('<a href="' + row.Website + '" target="_blank">Website</a>');
+                                popupContent.push('<b>Website:</b> <a href="' + row.Website + '" target="_blank">' + row.Website + '</a>');
                             }
                             if (row.Email && row.Email !== 'N/A') {
-                                popupContent.push('<a href="mailto:' + row.Email + '">' + row.Email + '</a>');
+                                popupContent.push('<b>Email:</b> <a href="mailto:' + row.Email + '">' + row.Email + '</a>');
                             }
-                            if (row.Contact && row.Contact !== 'N/A') {
-                                popupContent.push(row.Contact);
+                            if (row.ContactNum && row.ContactNum !== 'N/A') {
+                                popupContent.push('<b>Contact Number:</b> ' + row.ContactNum);
+                            }
+                            if (row.HygieneRating && row.HygieneRating !== 'N/A') {
+                                popupContent.push('<b>Hygiene Rating:</b> ' + row.HygieneRating);
                             }
 
                             marker.bindPopup(popupContent.join('<br>'));
